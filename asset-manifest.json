@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/ReportsUsers/static/css/main.fec1d2e2.css",
+    "main.js": "/ReportsUsers/static/js/main.68a24630.js",
+    "static/js/787.22f8297f.chunk.js": "/ReportsUsers/static/js/787.22f8297f.chunk.js",
+    "static/media/Montserrat-Bold.ttf": "/ReportsUsers/static/media/Montserrat-Bold.079ca05d3ded9bc107ab.ttf",
+    "static/media/Montserrat-SemiBold.ttf": "/ReportsUsers/static/media/Montserrat-SemiBold.fa8441f345d83a0bc4ec.ttf",
+    "static/media/Montserrat-Light.ttf": "/ReportsUsers/static/media/Montserrat-Light.02afb26fe72fcc052988.ttf",
+    "static/media/HeliosStencil-SemiBold.ttf": "/ReportsUsers/static/media/HeliosStencil-SemiBold.0f4273af0b26a4dadaa8.ttf",
+    "static/media/HeliosStencil-Black.ttf": "/ReportsUsers/static/media/HeliosStencil-Black.8625091f82e2de56fec9.ttf",
+    "static/media/HeliosStencil-Bold.ttf": "/ReportsUsers/static/media/HeliosStencil-Bold.f13872460e94468fbecb.ttf",
+    "index.html": "/ReportsUsers/index.html",
+    "main.fec1d2e2.css.map": "/ReportsUsers/static/css/main.fec1d2e2.css.map",
+    "main.68a24630.js.map": "/ReportsUsers/static/js/main.68a24630.js.map",
+    "787.22f8297f.chunk.js.map": "/ReportsUsers/static/js/787.22f8297f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fec1d2e2.css",
+    "static/js/main.68a24630.js"
+  ]
+}
