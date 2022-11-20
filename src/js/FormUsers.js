@@ -1,7 +1,7 @@
 import React from 'react';
 import FormAllUsers from '../App';
 import ReactDOM from 'react-dom';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {urlCookie} from "./UrlAlot";
 
 // import Cookies from 'js-cookie';
@@ -299,7 +299,7 @@ const model = Schema.Model({
             // label ="Date"
                     // onSelect={value => {getValue(value, 'yyyy/MM/dd')}}
                     disabledDate={afterToday()}
-                    placeholder="Select Date Range" 
+                    placeholder="Selecciona la fecha" 
                 />
             <Field  oneTap
                     accepter={DatePicker}
@@ -313,13 +313,10 @@ const model = Schema.Model({
             // label ="Date"
                     // onSelect={value => {getValue(value, 'yyyy/MM/dd')}}
                     disabledDate={afterToday()}
-                    placeholder="Select Date Range" 
-                /></div>
-                
-            {/* <div> */}
-            <br></br>
-            {/* <Form.Group> */}
-            <Field  
+                    placeholder="Selecciona la fecha" 
+                />
+
+                <Field  
                     accepter={SelectPicker}
                     name="selectSchedule"
                     label="Horario"
@@ -331,18 +328,26 @@ const model = Schema.Model({
             // label ="Date"
                     // onSelect={value => {getValue(value, 'yyyy/MM/dd')}}
                     // disabledDate={afterToday()}
-                    placeholder="Select Schedule" 
+                    placeholder="Selecciona el Horario" 
                 />
+
+                <Form.Group>
+                    <Button style={{backgroundColor:"#00e500",color:"black",fontWeight:"600"}} id="idSubmitSearch" disabled  =  {recuperado.length===0 ? true : false} appearance="primary" onClick={HandleSubmit}>
+                    Enviar
+                    </Button>
+                </Form.Group>
+                
+                </div>
+                
+            {/* <div> */}
+            {/* <br></br> */}
+            {/* <Form.Group> */}
+            
                 {/* </Form.Group> */}
                  {/* </div> */}
             
-            
-            <br></br>
-                <Form.Group>
-                    <Button id="idSubmitSearch" disabled  =  {recuperado.length===0 ? true : false} appearance="primary" onClick={HandleSubmit}>
-                    Submit
-                    </Button>
-                </Form.Group>
+          
+                
                 </Form>
             </FlexboxGrid.Item>
             

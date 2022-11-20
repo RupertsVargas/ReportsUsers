@@ -392,7 +392,9 @@ function createSubRows(obj={},objAll={},fecha,row_){
     const [open, setOpen] = React.useState(false);
     
     console.warn(row);
-    
+    let infoByDay = row.subTable.infoByDay;
+    let timeTotal = infoByDay.rest ? "--" : Math.round(infoByDay.timeTotal) ;
+    let timeToReplace = infoByDay.rest ? "--" : Math.round(infoByDay.timeToReplace) ;
     // CREACION DE ROW PADRE
     return (
         <React.Fragment>
@@ -414,12 +416,17 @@ function createSubRows(obj={},objAll={},fecha,row_){
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.endTime}</TableCell>
             
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.minExtras}</TableCell>
+            <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{timeTotal}</TableCell>
+            <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{timeToReplace}</TableCell>
+            
+
+
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.incidence}</TableCell>
             <TableCell className="letterTableByUserBody endMiddleTable" align="center">{row.complete}</TableCell>
             
             </TableRow>
             <TableRow className="innerTableSub">
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0, border: 0}} colSpan={8}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0, border: 0}} colSpan={9}>
             {/* <TableCell className="containerSubTableSub" style={{ paddingBottom: 0, paddingTop: 0 }} > */}
                 <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box sx={{ margin: 1 }}>
@@ -512,9 +519,11 @@ function createSubRows(obj={},objAll={},fecha,row_){
     "Fecha",
     "Entrada",
     "Salida",
+    "Min Ext",
+    "Min Totales",
+    "Min Rep",    
+    "Incidencias",
     "Completado",
-    "Min Extras",
-    "Incidencias"
   ];
   
     // const arrayHeaderTable = [
@@ -622,11 +631,11 @@ function createSubRows(obj={},objAll={},fecha,row_){
               <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[1]}</TableCell> 
               <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[2]}</TableCell> 
               <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[3]}</TableCell> 
-              
-              <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[5]}</TableCell>
-              <TableCell className="letterTableByUserHeader firstTable endMiddleTable" align="center">{arrayHeaderTable[6]}</TableCell>  
-
               <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[4]}</TableCell>
+              <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[5]}</TableCell>
+              <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[6]}</TableCell>  
+              <TableCell className="letterTableByUserHeader firstTable firstMiddleTable" align="center">{arrayHeaderTable[7]}</TableCell>
+              <TableCell className="letterTableByUserHeader firstTable endMiddleTable" align="center">{arrayHeaderTable[8]}</TableCell>
 
               </TableRow>
           </TableHead>
@@ -708,17 +717,26 @@ export function HeaderTable(objFather={}) {
     let obj = objFather.info;
     obj.name = obj.name ? obj.name : "- - -";
     obj.email = obj.email ? obj.email : "notFound@notFound.not";
-    obj.minutesTotal = obj.minutesTotal ? obj.minutesTotal : "-";
-    obj.minutesToReplace = obj.minutesToReplace ? obj.minutesToReplace : "-";
+
+    let summary = objFather.time;
+
+    let summaryShow = {};
+
+    // timeToReplace
+    summaryShow.timeTotal = summary.timeTotal ? summary.timeTotal : "-";
+    summaryShow.timeToReplace = summary.timeToReplace ? summary.timeToReplace : "-";
     obj.minutesExtra = obj.minutesExtra ? obj.minutesExtra : "-";
 
-    obj.delays = obj.delays ? obj.delays : "-";
-    obj.faults = obj.minutesFoul ? obj.minutesFoul : "-";
-    obj.dayCorrect = obj.dayCorrect ? obj.dayCorrect : "-";
-    obj.dayIncomplet = obj.dayIncomplet ? obj.dayIncomplet : "-";
+    // obj.delays = obj.delays ? obj.delays : "-";
+    summaryShow.faults = summary.faults ? summary.faults : "-";
+    summaryShow.correctDays = summary.correctDays ? summary.correctDays : "-";
+    summaryShow.incompletDays = summary.incompletDays ? summary.incompletDays : "-";
+    summaryShow.restDays = summary.restDays ? summary.restDays : "-";
+    summaryShow.journeys = summary.journeys ? summary.journeys : "-";
     let setHtml =   CollapsibleTable(objFather,true);
 
 
+    
     return <div className="containerByUser">
       <div className="containerHeaderByUser">
         <div className="containerPictureUser">
@@ -728,39 +746,47 @@ export function HeaderTable(objFather={}) {
         </div>
         </div>
         <div className="containerDataNameEmail"> 
-            <div className="byUserName">{obj.name}</div> 
+            <div className="byUserName">{obj.name + " "+ obj.lastName}</div> 
             <div className="byUserEmail">{obj.email}</div>
         </div>
         <div className="lineDivide"></div>
 
         <div className="containerDataExtra"> 
             <div className="byUserAnotherContainer">
+            <span className="byUserAnotherFather">Jornadas:</span>
+            <span className="byUserAnotherChild">{summaryShow.journeys}</span>
+            </div>
+            <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Minutos Totales:</span>
-            <span className="byUserAnotherChild">{obj.minutesTotal}</span>
+            <span className="byUserAnotherChild">{summaryShow.timeTotal}</span>
             </div>
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Minutos a Reponer:</span>
-            <span className="byUserAnotherChild">{obj.minutesToReplace}</span>
+            <span className="byUserAnotherChild">{summaryShow.timeToReplace}</span>
             </div>
-            <div className="byUserAnotherContainer">
+            {/* <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Retardos:</span>
             <span className="byUserAnotherChild">{obj.delays}</span>
-            </div>
+            </div> */}
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Faltas</span>
-            <span className="byUserAnotherChild">{obj.faults}</span>
+            <span className="byUserAnotherChild">{summaryShow.faults}</span>
             </div>
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Minutos Extra:</span>
-            <span className="byUserAnotherChild">{obj.minutesExtra}</span>
+            <span className="byUserAnotherChild">{0}</span>
             </div>
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Días Correctos:</span>
-            <span className="byUserAnotherChild">{obj.dayCorrect}</span>
+            <span className="byUserAnotherChild">{summaryShow.correctDays}</span>
             </div>
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Incompletos:</span>
-            <span className="byUserAnotherChild">{obj.dayIncomplet}</span>
+            <span className="byUserAnotherChild">{summaryShow.incompletDays}</span>
+            </div>
+            <div className="byUserAnotherContainer">
+            <span className="byUserAnotherFather">Días de Descanso:</span>
+            <span className="byUserAnotherChild">{summaryShow.restDays}</span>
             </div>
           </div>
       </div>

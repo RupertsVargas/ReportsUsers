@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-// import logo from './logo.svg';
 import ReactDOM from 'react-dom';
-
-// import './js/htmlOfJs.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {HeaderTable} from './js/htmlOfJs.js';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import DataTable from 'react-data-table-component';
@@ -10,42 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch,faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import {dataParam} from "./js/FormUsers";
+import { SelectPicker } from 'rsuite';
+import {DataReportGlobal} from "./js/reportGlobal";
 // import 
 import {urlCookie} from "./js/UrlAlot";
+
 let userSize = 10;
 export var whoIs = {};
-// export var boolPagination_ = false;
-// var userData = null;
 var dataUsersGlobal = [];
 const urlFetch = urlCookie+"AdminMain/index";
 
-function hideLoad(){
-  // document.getElementById("idFormAllUsersContainer").style.display = "none";
-  document.getElementById("idLoad2").classList.add("classProgressBarInner");
-  document.getElementById("idContainerAbsolute").style.display = "none";
-  document.getElementById("idFormAllUsersContainer").style.display = "flex";
-  
-}
-
-function ComponentTest(){
-  // const [nameContest, setNameContest] = useState('')
-}
-// setLoadInputs(true);
-function setLoadInputs(is_){
-  // if(is_ === true)  {
-  //   document.getElementById("idSubmitSearch").setAttribute("disabled",is_)
-  // }else{
-  //   document.getElementById("idSubmitSearch").removeAttribute("disabled") ;
-  // }
-
-  
-  
-  
-  // return a;
-}
-// function setOffLoadInputs(){
-  // document.getElementById("idSubmitSearch").setAttribute("disabled","false");
-// }
 
 const CustomLoader = () => (
   <div className="loadContainer" >
@@ -54,31 +26,6 @@ const CustomLoader = () => (
   </div>
 );
 
-
-function createLoad(){
-
-  // console.log("LOAD");
-  let container_ = 
-  (
-    <div className="classContentLoadNew">
-          <div id="idTheme">L o a d i n g</div>
-          <div id="idBar" className="classProgressBar">
-          <div id="idLoad2"></div>
-          </div>
-          <div id="idMsg" className="classErrorMsgContainer"></div>
-    </div>
-    ) ;
-
-    ReactDOM.render(
-      container_
-      , document.getElementById("idContainerAbsolute"));
-      // document.getElementById("idLoad2").classList.add("classProgressBarInner");
-      // document.getElementById("idContainerAbsolute").style.display = "none";
-      document.getElementById("idFormAllUsersContainer").style.display = "none";
-      // alert();
-      document.getElementById("idContainerAbsolute").style.display = "flex";
-    
-}
 
 
 function personalityFetchMsg(obj={}){
@@ -108,35 +55,8 @@ function personalityFetchMsg(obj={}){
 
 }
 
-// let dataParam = {};
 
-// const getData_ = fetch("http://localhost/checker/AdminMain/index" , {
-
-//   method: 'POST',
-//   body: JSON.stringify(dataParam),
-//   headers:{
-//     'Content-Type': 'application/json'
-//   }
-// })
-
-//   .then((response) => response.json() )
-//   .then((json) => {
-//     console.log(json);
-//     return json;
-//   }).catch(error => {
-//     // console.log("SIU");
-//     let objReturn = {
-//       title:"E r r o r",
-//       error:true,
-//       msg : error.message,
-
-//     }
-//     personalityFetchMsg(objReturn);
-//     return  objReturn;
-//   } 
-//   );
-
-  let dataUsersArray = [];
+let dataUsersArray = [];
 
 
 const paginacionOpciones={
@@ -146,75 +66,16 @@ const paginacionOpciones={
   selectAllRowsItemText: 'Todos',
 }
 
-// const setHtml = 
-//   {
-//     div:"<div>HOLA</div>"
-
-//   };
-
-// const [pending, setPending] = React.useState(true);
-//     const [rows, setRows] = React.useState([]);
-//     React.useEffect(() => {
-//       const timeout = setTimeout(() => {
-//         setRows(data);
-//         setPending(false);
-//       }, 2000);
-//       return () => clearTimeout(timeout);
-//     }, []);
 function  SetDataTableFirst(dataObj={}) {
-//     const [pending, setPending] = React.useState(true);
-// const [rows, setRows] = React.useState([]);
-// React.useEffect(() => {
-//   const timeout = setTimeout(() => {
-//     // setRows(dataObj.columns);
-//     // setPending(false);
-//   }, 2000);
-//   return () => clearTimeout(timeout);
-// }, []);
+
   return dataObj;
   console.log(dataObj);
-// CrearFuncion(){
-//   const [pending, setPending] = React.useState(true);
-// const [rows, setRows] = React.useState([]);
-// React.useEffect(() => {
-//   const timeout = setTimeout(() => {
-//     setRows(dataObj.columns);
-//     setPending(false);
-//   }, 2000);
-//   return () => clearTimeout(timeout);
-// }, []);
-
-// return <DataTable 
-//         columns={dataObj.columns}
-//         data={dataObj.data}
-//         // title="Campeones UCL 2000-2019"
-//         // progressPending={pending}
-//         pagination
-//         paginationComponentOptions={paginacionOpciones}
-//         fixedHeader
-//         // noHeader={true}
-//         fixedHeaderScrollHeight="600px"
-//         noDataComponent={<span>No se encontró ningún elemento</span>}
-//         // progressPending={pending}
-//         // progressComponent={<CustomLoader />}
-//         // noHeader={true}
-//         />
 }
-
-// function createLoad(){
-//   let container = 
-//   (<div id="idTheme">L o a d i n g</div>
-//           <div id="idBar" className="classProgressBar">
-//             <div id="idLoad2"></div>
-//           </div>
-//           <div id="idMsg" className="classErrorMsgContainer"></div>
-//     ) ;
-//     ReactDOM.render(
-     
-//       container
-//       , document.getElementById("idContainerAbsolute"));
-    
-// }
+const dataSelectPicker = ['Reporte Detalle', 'Reporte Global'].map(
+  item => ({ label: item, value: item })
+);
+console.log(dataSelectPicker);
+// var dataSelectPicker = 
 class FormAllUsers extends Component {
 
   state={
@@ -232,9 +93,12 @@ class FormAllUsers extends Component {
       busqueda: '',
       campeones: [],
       columnas:[],
+      searchForAnother: "",
       subColumns :[],
       propiedad : {},
       searchBlur:false,
+      view: "Reporte Detalle",
+      dataApi: {},
       // this.state.container.load
       container:{
         load:true
@@ -291,16 +155,59 @@ class FormAllUsers extends Component {
     // http://localhost:3000/
   }
 
-  
 
-  // const dataUsers = async () => {
-  //   console.log("Loading");
-  //   const a = await getData_;
-  //   console.log(a);
-  // };
+  // asignarColumnasTest =  (data__)=>{
+
+  //   const  columnas = [
+  //     { 
+  //       // count : 0,
+  //       // table: true,
+  //       selector: 'id',
+  //       sortable: true,
+  //       name: "año",
+  //       myRowStyle: {
+  //         backgroundColor: 'green',
+  //         color : 'white',
+  //       //  ...
+  //         },
+  //       // cell: (value) => ( 
+
+
+  //       // )
+  //     },
+  //     {
+  //       selector: 'id2',
+  //       sortable: true,
+  //       name: "añ2",
+  //       myRowStyle: {
+  //         backgroundColor: 'green',
+  //         color : 'white',
+  //       //  ...
+  //         },
+  //       // cell: (value) => ( 
+
+
+  //       // )
+  //     },
+      
+      
+          
+    
+  //   ];
+  //   // console.log(columnas);
+  //   this.setState({columnas: columnas,campeones:data__});
+  //   // return false;
+  // }
+
   asignarColumnas =  (data__)=>{
 
     const  columnas = [
+      // {
+      //   selector: 'id',
+      //   sortable: true,
+      //   name: "año",
+      // }
+      // ,
       { 
         // count : 0,
         // table: true,
@@ -335,27 +242,6 @@ class FormAllUsers extends Component {
     // return false;
   }
 
-  // setSubColumns=(value)=>{
-  //   const columnas_ = [
-  //     { 
-  //      // count : 0,
-  //      table: true,
-  //      // selector: 'id',
-  //      sortable: true,
-  //     //  name: "año",
-  //      cell: (value) => ( 
-  //       //  console.log("SD"),
-  //       console.log(value.info)
-  //     )
-  //     },
-          
-    
-  //   ];
-  //   console.log(columnas_);
-  //   // console.log()
-  //   this.setState({subColumns: columnas_});
-  // }
-
 
   filtrarElementos=(varBusqueda)=>{
     // console.log(this.state.busqueda);
@@ -381,44 +267,20 @@ class FormAllUsers extends Component {
       return "";
     });
 
-
-   
-    // this.setState({campeones: search});
-    // this.state.container.load = false;
+    this.state.searchForAnother = varBusqueda;
     this.setState({campeones: search});
   }
 
-  crearIndex = () => {
-
-
+  onChangeView = (value) =>{
+    // if(value==="Reporte Detalle"){
+      this.state.container.load = false;
+      this.setState({view: value});
+    // }
+  //  value
+    // console.log(value);
   }
-  // shouldComponentUpdate(nextProps, nextState){
-  //   console.log(nextState);
-  //   console.log(nextProps);
-  // }
-  // componentDidMount(){
-    // componentWillMount() {
-    //   console.log('Se ejecuta componentWillMount')
-    // }
-  
-    // componentDidMount() {
-    //   console.log('Se ejecuta componentDidMount')
-    // }
-  
-    // componentWillReceiveProps(nextProps) {
-    //   console.log('Se ejecuta componentWillReceiveProps con las propiedades futuras', nextProps)
-    // }
-  
-    // shouldComponentUpdate(nextProps, nextState) {
-    //   console.log('Ejecutando shouldComponentUpdate. Próximas propiedades y estado: ', nextProps, nextState)
-    //   // debo devolver un boleano
-    //   return true
-    // }
-  
-    // componentWillUpdate(nextProps, nextState) {
-    //   console.log('Ejecutando componentWillUpdate. Próximas propiedades y estado: ', nextProps, nextState)
-    // }
-  
+
+
     componentDidUpdate(prevProps, prevState) {
               // setLoadInputs(true);
 
@@ -476,13 +338,7 @@ class FormAllUsers extends Component {
                   whoIs = convert[userSize-1] ? convert[userSize-1] : {} ;
                   this.state.container.load = false;
                   this.asignarColumnas(dataUsersArray);
-  
-                  
-                  // setLoadInputs(false);
-                  // document.getElementById("idSubmitSearch").removeAttribute("disabled") ;
-                  // this.setState({campeones: dataUsersArray}); 
-                  
-                  
+
           
           
                     // return json;
@@ -535,45 +391,13 @@ class FormAllUsers extends Component {
     // }
     componentDidMount(){
       console.log("SIU");
-      // setLoadInputs(true);
-    // let userData_ = userData;
-    // console.log("Loading");
-    // obj.name
-    // console.log(dataUsersArray);
-    // let  _dataParam = { initDate:"2022-01-02" };
-    // console.log( JSON.stringify (_dataParam));
-    // console.log(countGlobal);
-    // const data = new URLSearchParams("");
-    // data.append('initDate', '2022-10-01');
-    // data.append('finalDate', '2022-10-21');
-    // // if(await countGlobal===0){
-      // alert();
-      // createLoad();
-      // return false;
-      // return false;
-      // dataUsersGlobal  = await getData_;
+
       let test = null;
       test = fetch(urlFetch , {
         method: 'POST',
         // mode: 'cors',
         // body: JSON.stringify({ 'parametro': 23 }),
         body:dataParam,
-        // headers: { 'Content-Type': 'application/json' },
-        // method: "POST",
-        // // mode: 'cors',
-        
-        // // body: _dataParam,
-        // body: JSON.stringify({'initDate':"2022-10-01",'finalDate':"2022-10-21"}),
-        // headers: {"Content-type": "application/json;charset=UTF-8" , 
-        // 'Access-Control-Allow-Origin' : "*",
-        // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-        // 'Access-Control-Allow-Headers': 'Content-Type'
-        // },
-        // res.header('Access-Control-Allow-Origin', "*");    
-        // res.h}eader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');   
-          // res.header('Access-Control-Allow-Headers', 'Content-Type');  
-
-       
         
       })
       
@@ -630,14 +454,7 @@ class FormAllUsers extends Component {
   
 
   render(){
-    // console.warn("RENDER: " + this.state.container.load);
-    // console.log(this.state.columnas);
-    
-  // progressPending={pending}
-  // progressComponent={<CustomLoader />}
-  // noHeader={true}}
 
-  // const [nameContest, setNameContest] = React.useState('')
   const customStyles = {
     rows: {
         style: {
@@ -647,25 +464,56 @@ class FormAllUsers extends Component {
         },
       }
   };
-    // },
-    // headCells: {
-    //     style: {
-    //         paddingLeft: '8px', // override the cell padding for head cells
-    //         paddingRight: '8px',
-    //     },
-    // },
-    // cells: {
-    //     style: {
-    //         paddingLeft: '8px', // override the cell padding for data cells
-    //         paddingRight: '8px',
-    //     },
-    // },
-// };
 
-  // onChange={(e)=>setEstado(e.target.value)} ;
-  
-  // console.log(SetDataTableFirst(this.state.columnas));
   SetDataTableFirst(this.state.columnas);
+  var whoDataTableIs = "";
+  // if(this.state.view===""){}
+  
+
+  // if(this.state.view==="Reporte Global") {
+  //   // this.asignarColumnasTest(dataUsersArray);
+  //   // .rdt_TableHead{
+  //     // display: none !important;
+  //   // }
+  //   document.getElementsByTagName(".rdt_TableHead").style.display = "";
+  //   // document.getElementsByClassName("rdt_TableHead").style = 
+  // }else{
+  //   document.getElementsByTagName(".rdt_TableHead").style.display = "none";
+  // }
+  whoDataTableIs = this.state.view==="Reporte Detalle" ?  
+  (<DataTable   
+    className="dataTable01_"
+    noHeader={true}
+                            columns={this.state.columnas}
+                            data={this.state.campeones}
+                            // title="Campeones UCL 2000-2019"
+                            // progressPending={pending}
+                            pagination
+                            paginationPerPage = {5}
+                            paginationRowsPerPageOptions={[5,10, 25, 50]}
+                            paginationComponentOptions={paginacionOpciones}
+                            fixedHeader
+                            // backGroundColor = {"black"}
+                            customStyles={customStyles}
+                            // noHeader={true}
+                            // fixedHeaderScrollHeight="600px"
+                            noDataComponent={<span>No se encontró ningún elemento</span>}
+                            rowStyleField={"myRowStyle"}
+                            progressPending={this.state.container.load}
+                            // value={test}
+                            // onChange={(e)=>setTest(e.target.value)} 
+                            // console.log(setTest({load:false}));
+                            // progressPending={true}
+
+                            progressComponent={<CustomLoader />}
+                            // progressPending={<div id="idBar" className="classProgressBar">
+                            // <div id="idLoad2"></div>
+                          // </div>}
+                            // progressComponent={<CustomLoader />}
+                            // noHeader={true}
+          /> ) :     
+         < DataReportGlobal data={dataUsersGlobal} search={this.state.searchForAnother}/>;
+
   return (
     
     // {this.}
@@ -673,54 +521,38 @@ class FormAllUsers extends Component {
     // {console.log("")}
     <div className="table-responsive">
     <br></br>  
+    <div className='contentFiltersAboutTable'>
+      <SelectPicker cleanable={false}  
+      data={dataSelectPicker}
+      defaultValue={dataSelectPicker[0].label}
+        // defaultValue={value}
+        onChange={this.onChangeView}
+        searchable={false} style={{ width: 224 }} /> 
       <div className="barraBusqueda">
-            <input
-              type="text"
-              placeholder="Buscar"
-              className="textField"
-              name="busqueda"
-              id="idSearchTable"
-              onKeyDown={this.onChange}
-              // value={this.state.busqueda}
-              // value={""}
-              // onChange={this.onChange}
-            />
-            <button onClick={this.onChangeSearch} type="button" className="btnBuscar" /*onClick={onClear}*/>
-              {" "}
-              <FontAwesomeIcon icon={faSearch} />
-            </button>
-          </div>
-      
-        <div >
-          {/* <div id="idLoad">Cargando</div> */}
-          {/* {SetDataTableFirst(setDataVar)} */}
-          <DataTable 
-          columns={this.state.columnas}
-          data={this.state.campeones}
-          // title="Campeones UCL 2000-2019"
-          // progressPending={pending}
-          pagination
-          paginationComponentOptions={paginacionOpciones}
-          fixedHeader
-          // backGroundColor = {"black"}
-          customStyles={customStyles}
-          // noHeader={true}
-          // fixedHeaderScrollHeight="600px"
-          noDataComponent={<span>No se encontró ningún elemento</span>}
-          rowStyleField={"myRowStyle"}
-          progressPending={this.state.container.load}
-          // value={test}
-          // onChange={(e)=>setTest(e.target.value)} 
-          // console.log(setTest({load:false}));
-          // progressPending={true}
+        <button onClick={this.onChangeSearch} type="button" className="btnBuscar" /*onClick={onClear}*/>
+                {" "}
+                <FontAwesomeIcon icon={faSearch} />
+              </button>
+              <input
+                type="text"
+                placeholder=""
+                className="customeTextFieldSearch"
+                name="busqueda"
+                id="idSearchTable"
+                onKeyDown={this.onChange}
+                // value={this.state.busqueda}
+                // value={""}
+                // onChange={this.onChange}
+              />
+              <span className='spanTextFieldSearch'>Buscar</span>
 
-          progressComponent={<CustomLoader />}
-          // progressPending={<div id="idBar" className="classProgressBar">
-          // <div id="idLoad2"></div>
-        // </div>}
-			    // progressComponent={<CustomLoader />}
-          // noHeader={true}
-          />
+            
+            </div>
+          </div>
+          
+         
+        <div>
+          {whoDataTableIs}
         </div>
     </div>
   );

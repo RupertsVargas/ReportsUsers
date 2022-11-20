@@ -49,7 +49,7 @@
 
 
 body{
-  font-family: monse;
+  font-family: monse !important;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -226,14 +226,17 @@ body{
 
 .fieldInputBlockContainer{
   display: flex;
-  margin: 0 !important;
-  width: 50%;
+  margin: 0 ;
+  margin-right: 28px;
+  /* width: 50%; */
   align-items: center;
   justify-content: space-between;
 }
 
 .fieldLabelCustome{
   font-family: monseBolder;
+  margin: 0;
+  margin-right: 8px;
 }
 
 #root{
@@ -263,13 +266,14 @@ body{
   /* color: rgb(142 142 142) !important; */
   /* background-color:#f5f5f8 !important; */
   letter-spacing: 0.5px !important;
-  font-size: 118% !important;
+  font-size: 100% !important;
   
 }
 .letterTableByUserBody{
   font-family: 'monseBolder' !important;
   font-weight: 600 !important;
   border: 0px solid gray !important;
+  font-size: 90% !important;
   /* border-bottom: 2px solid #e0e0e0; */
 }
 
@@ -279,6 +283,7 @@ body{
   color:black !important;
   border: 0px solid gray !important;
   border-bottom: 2px solid rgb(0, 0, 0) !important;
+  font-size: 85% !important;
   /* border-bottom: 2px solid #e0e0e0; */
 }
 
@@ -287,6 +292,8 @@ body{
   font-weight: 600 !important;
   border: 0px solid gray !important;
   text-align: justify !important;
+  font-size: 80% !important;
+  padding: 8px !important;
 }
 
 /* LOAD */
@@ -351,7 +358,7 @@ body{
   }
 }
 
-.rdt_TableHead{
+.dataTable01_ .rdt_TableHead{
   display: none !important;
 }
 
@@ -545,4 +552,49 @@ body{
 }
 .classIconCustom2{
   font-size: 150%;
+}
+
+/* PADDINGS TABLE */
+.letterTableByUserBody,.letterTableByUserHeader {
+  padding: 10px !important;
+}
+
+
+.rs-form:not(.rs-form-inline) .rs-form-group:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.barraBusqueda{
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.customeTextFieldSearch{
+  border-radius: 5px;
+  border: 0px solid gray;
+  outline: transparent;
+  padding: 2px;
+}
+
+.spanTextFieldSearch{
+  font-weight: 600;
+  margin-right: 12px;
+}
+.btnBuscar{
+  background-color: transparent;
+}
+
+p{
+  margin:0 !important;
+}
+
+
+.contentFiltersAboutTable{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
 }
