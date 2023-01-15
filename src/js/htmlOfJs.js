@@ -1,11 +1,4 @@
-// import DataTable from 'react-data-table-component';
-
-// import * as React from 'react';
-// import React from 'react';
 import React, { useEffect } from "react";
-// import {Pagination } from 'rsuite';
-// import "./style.css";
-// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -35,8 +28,6 @@ import {faCircle, faCircleCheck,faCircleXmark,faCircleExclamation ,
   faEye,faEyeSlash,faPenToSquare,
   faMagnifyingGlass,faPencil, faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons";
-// import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-// import {FormAllUsers,whoIs} from "../App"
 import 'moment/locale/es';
 export var boolChange = false;
 export var boolChangesd = false;
@@ -124,23 +115,31 @@ function setImgResult(url_="NA",path,class_="imgResult_"){
         complete =  <FontAwesomeIcon icon={faCircleXmark} className="classIconCustom2" />
       }
 
+      // if
       // faMagnifyingGlass,faPencil
       // if(incidencePre==0 && statusComplete == 1 ){
 
-      let iE = obj.iE ? obj.iE : "0" ;
-      let iconIncidence_ = iE === "0" ? faEyeSlash : faPenToSquare;
-      let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
+        let iE = obj.iE ? ((obj.iE).length === 0 ) ? "0" : obj.iE : "0" ;
+        let iconIncidence_ = iE === "0" ? faEyeSlash : faPenToSquare;
+        let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
       // let iE = obj.iE ? obj.iE : "javascript:void(0)" ;
       // iE = iE ==="0"? "javascript:void(0)" : iE; 
-      let urlClickFather =  iE ==="0" ? "javascript:void(0)" : dataAll.info.url+"AdminIncidences/"+iE;
+      let urlClickFather =  iE ==="0" ? "#!" : dataAll.info.url+"AdminIncidences/"+iE;
       // let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
 
-        incidence = <a className={isDisableIncidence} href={urlClickFather}> <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+        
+        if(urlClickFather==="#!"){
+          // incidence__ = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+          incidence = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+        } else{
+          incidence = <a className={isDisableIncidence} href={urlClickFather}> <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+        }
       // }
       if(incidencePre==1){
         incidence =<a className="" href={urlClickFather}> <FontAwesomeIcon icon={faEye} className="normalIncidence" /> </a>;
       } 
 
+      
       // <FontAwesomeIcon icon="fa-solid fa-circle" />
       // let complete = statusComplete;
       
@@ -293,14 +292,17 @@ function createSubRows(obj={},objAll={},fecha,row_){
   let realizado = obj.has===true ? 1 : 0;
 
       let iE = obj.iE ? obj.iE : "0" ;
-
-      let objIeAux = obj.iE ? obj.iE : [];
+      let objIeAux = obj.iE  ? obj.iE : [] ;
+      // console.log(objIeAux);
       let iconIncidence_ = iE === "0" || objIeAux.length === 0  ? faEyeSlash  : faPenToSquare;
       let isDisableIncidence = iE === "0" || objIeAux.length === 0  ? "classDisableIncidence" : "";
-      let urlClickFather =  iE === "0" || objIeAux.length === 0 ? "javascript:void(0)" : objAll.info.url+"AdminIncidences/"+iE;
+      let urlClickFather =  iE === "0" || objIeAux.length === 0 ? "#!" : objAll.info.url+"AdminIncidences/"+iE;
       // let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
+      // if(urlClickFather!=="#!"){
+        // incidence__ = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+        incidence__ = <a className={isDisableIncidence} href={urlClickFather}> <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
+      // }   
       
-      incidence__ = <a className={isDisableIncidence} href={urlClickFather}> <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
       if(incidencePre==1){
         // let addIfIsFather = row_.incidenceType === "father" ?  row_.iE : "javascript:void(0)";
         urlClickFather =  row_.subTable.incidenceType === "father" ? objAll.info.url+"AdminIncidences/"+row_.subTable.iE : urlClickFather;
@@ -308,6 +310,7 @@ function createSubRows(obj={},objAll={},fecha,row_){
         incidence__ =<a className="" href={urlClickFather}> <FontAwesomeIcon icon={faEye} className="normalIncidence" /> </a>;
       } 
 
+      
 
   if(realizado===0){
     iconIncidence = setImgResult("AvisoIncidencia",objAll.info.url,"imgResult_");
@@ -316,7 +319,7 @@ function createSubRows(obj={},objAll={},fecha,row_){
   if(realizado === 1){  
     statusByCheckPoint =  obj.data.check.statusUserChecks;
     iconResult = statusByCheckPoint == 0 ?  <FontAwesomeIcon icon={faCircleCheck} className="classIconCustom" /> 
-    :  <FontAwesomeIcon icon={faExclamationCircle} className="classIconCustom" />  ;
+    :<FontAwesomeIcon icon={faExclamationCircle} className="classIconCustom" />  ;
   }
 
   // if(statusByCheckPoint == 1){
@@ -391,10 +394,12 @@ function createSubRows(obj={},objAll={},fecha,row_){
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     
-    console.warn(row);
+    // console.warn(row);
     let infoByDay = row.subTable.infoByDay;
-    let timeTotal = infoByDay.rest ? "--" : Math.round(infoByDay.timeTotal) ;
-    let timeToReplace = infoByDay.rest ? "--" : Math.round(infoByDay.timeToReplace) ;
+    console.warn(infoByDay);
+    let timeTotal = infoByDay.rest ? "--" : Math.round( (infoByDay.timeTotal ? infoByDay.timeTotal : 0) ) ;
+    let timeToReplace = infoByDay.rest ? "--" : Math.round( (infoByDay.timeToReplace ? infoByDay.timeToReplace : 0) );
+    let timeExtraSum = infoByDay.rest ? "--" : Math.round( (infoByDay.timeExtra ? infoByDay.timeExtra : 0));
     // CREACION DE ROW PADRE
     return (
         <React.Fragment>
@@ -415,7 +420,7 @@ function createSubRows(obj={},objAll={},fecha,row_){
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.startTime}</TableCell>
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.endTime}</TableCell>
             
-            <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{row.minExtras}</TableCell>
+            <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{timeExtraSum}</TableCell>
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{timeTotal}</TableCell>
             <TableCell className="letterTableByUserBody firstMiddleTable" align="center">{timeToReplace}</TableCell>
             
@@ -548,44 +553,18 @@ function createSubRows(obj={},objAll={},fecha,row_){
     return (<Row  key={dataObj.info.idUser+countPreRow} row={row} />);
   } 
   function  CollapsibleTable(dataObj={},again=false){
-    // console.log(dataObj);
-    
-    // boolPagination_ = true;
-    // console.log(boolPagination_);
+
     const [page, setPage] = React.useState(0);
-    // const [boolPagination_, setNewPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    
-    // console.log("COLLAPSION");
-    // const emptyRows =
-    // page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-    // boolChange = false;
-    // init = true;
+   
     const handleChangePage = (event, newPage) => {
-      // console.log(newPage);
-      // console.log(boolPagination_);
+
       boolChange = true;
-      // boolPagination_
-      
-      // again = true;
-      // console.log(init + " AGAIN");
-      // console.log(boolPagination_);
-      // setIsLoading(true);
-      
+
       setPage(newPage);
 
     };
 
-    
-    // boolPagination_ = false;
-    // const render = () =>{
-    //   console.log("HOLRENDER");
-    // }
-
-    // const userObject = React.useMemo(() => {
-    //   console.log("MEMO");
-    // }, []); // Don't forget the dependencies here either!
-  
   
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(+event.target.value);
@@ -676,45 +655,17 @@ function createSubRows(obj={},objAll={},fecha,row_){
     );
   }
 
+  function convertMinuteToHour(time){
 
+    return time / 60;
 
+  }
 
-
-
-
-
-  // const dataUsers = async () => {
-  //   console.log("Loading");
-  //   const a = await getData_;
-  //   console.log(a);
-  // };
-  // export  const htmlTable_ =  (objFather={}) => { 
-export function BodyTable(objFather={}) {  
-
-
-  let obj = objFather.info;
-  let setHtml =   CollapsibleTable(objFather);
-  // whoIs.idUser
-  // console.log(obj);
-  // console.
-  // console.log("FIN");
-  return  setHtml ;
-
-
-}  
 
 export function HeaderTable(objFather={}) {  
-    // const [state, setState] = useState({
-    //   name: "John Doe",
-    //   email: "john.doe@test.com"
-    // });
-  // console.log("HEADER");
-    // const [loading, setLoading] = React.useState(true);
-    // console.log(loading);
-    
-
-
     let obj = objFather.info;
+
+    console.log(obj);
     obj.name = obj.name ? obj.name : "- - -";
     obj.email = obj.email ? obj.email : "notFound@notFound.not";
 
@@ -723,9 +674,10 @@ export function HeaderTable(objFather={}) {
     let summaryShow = {};
 
     // timeToReplace
-    summaryShow.timeTotal = summary.timeTotal ? summary.timeTotal : "-";
-    summaryShow.timeToReplace = summary.timeToReplace ? summary.timeToReplace : "-";
-    obj.minutesExtra = obj.minutesExtra ? obj.minutesExtra : "-";
+    summaryShow.timeTotal = summary.timeTotal ? (convertMinuteToHour(summary.timeTotal)).toFixed(2) : "-";
+    summaryShow.timeToReplace = summary.timeToReplace ? (convertMinuteToHour(summary.timeToReplace)).toFixed(2) : "-";
+    // timeExtra
+    summaryShow.timeExtra = summary.timeExtra ? (convertMinuteToHour(summary.timeExtra)).toFixed(2) : "-";
 
     // obj.delays = obj.delays ? obj.delays : "-";
     summaryShow.faults = summary.faults ? summary.faults : "-";
@@ -757,11 +709,11 @@ export function HeaderTable(objFather={}) {
             <span className="byUserAnotherChild">{summaryShow.journeys}</span>
             </div>
             <div className="byUserAnotherContainer">
-            <span className="byUserAnotherFather">Minutos Totales:</span>
+            <span className="byUserAnotherFather">Horas Totales:</span>
             <span className="byUserAnotherChild">{summaryShow.timeTotal}</span>
             </div>
             <div className="byUserAnotherContainer">
-            <span className="byUserAnotherFather">Minutos a Reponer:</span>
+            <span className="byUserAnotherFather">Horas a Reponer:</span>
             <span className="byUserAnotherChild">{summaryShow.timeToReplace}</span>
             </div>
             {/* <div className="byUserAnotherContainer">
@@ -773,8 +725,8 @@ export function HeaderTable(objFather={}) {
             <span className="byUserAnotherChild">{summaryShow.faults}</span>
             </div>
             <div className="byUserAnotherContainer">
-            <span className="byUserAnotherFather">Minutos Extra:</span>
-            <span className="byUserAnotherChild">{0}</span>
+            <span className="byUserAnotherFather">Horas Extra:</span>
+            <span className="byUserAnotherChild">{summaryShow.timeExtra}</span>
             </div>
             <div className="byUserAnotherContainer">
             <span className="byUserAnotherFather">Días Correctos:</span>

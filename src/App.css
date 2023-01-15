@@ -427,19 +427,57 @@ body{
 .table-responsive{
   width: 100%;
 }
-
+.iconCustom{
+  color: #00e500 ;
+  font-size: 280% ;
+}
+.letterContainer{
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 86%;
+  letter-spacing: 6px;
+}
 .loadContainer{
   padding: 24px;
+  border-radius: 7px;
+  
   font-size: 200%;
   height: 70vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   width: 100%;
   background-color: var(--loaderBack-color);
+  background: white;
   /* background-color: #6a6a6a; */
-    color: var(--letter-color);
+  color: var(--letter-color);
+}
+.loadContainerPre{
+  
+  position: relative;
+
+}
+.loadContainerM{
+  padding: 24px;
+  border-radius: 7px;
+  
+  /* position: fixed; */
+  z-index: 6;
+  left: 0;
+  top:0;
+  /* height: 100%; */
+  font-size: 200%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: var(--loaderBack-color);
+  background: #ffffff8c;
+  /* background-color: #6a6a6a; */
+  color: var(--letter-color);
 }
 
 .iconPrincipalTable{
@@ -597,4 +635,91 @@ p{
     justify-content: space-between;
     align-items: center;
     padding: 0 14px;
+    flex-direction: row-reverse;
+}
+
+
+
+
+
+
+.rs-picker-toggle-value{
+  color: gray !important;
+  font-weight: 600;
+}
+
+.contentAllContainer{
+  display: flex;
+}
+
+
+.titleDataReportGlobal{
+
+  
+  text-transform: uppercase;
+    background: #27363d;
+    font-size: 130%;
+    text-align: center;
+    color: white;
+    padding: 0.6%;
+    font-weight: 600;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+.DataPersonalByUserContent{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 85%;
+  justify-content: space-around;
+  /* space-between; */
+  
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 45px;
+}
+
+.DataPersonalByUserContentTitle{
+  color:#27363d;
+}
+.DataPersonalByUserContentSet{
+  color:#b1b2b3;
+}
+
+.bordersMiddle{
+  /* border:; */
+  border-left: 3px solid #00e500;
+  border-right: 3px solid #00e500;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+.DataPersonalByUserContent div{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.contentDataReportGlobal{
+  background-color: white;
+  padding: 12px;
+}
+
+.DataTableClassName02{
+  padding:4px;
+  border-radius: 10px;
+}
+/* 
+.AllContentDataReportGlobal{
+  padding: 10px;
+} */
+
+.contentSelectFilters{
+  display: flex;
+    width: 100%;
+    flex-wrap: wrap;
 }

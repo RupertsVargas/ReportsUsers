@@ -1,18 +1,12 @@
 import React from 'react';
-import FormAllUsers from '../App';
+import FormAllUsers,{FormAllUsers2} from '../App';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {urlCookie} from "./UrlAlot";
-
-// import Cookies from 'js-cookie';
-
-// const urlCookie = Cookies.get('url') == undefined ? "http://localhost/checker/" : Cookies.get('url');
-// console.log(urlCookie);
-// import './styles.css';
-// import { Form, Schema } from 'rsuite';
-// import boolChange from './htmlOfJs'
+import { useQuery, useMutation } from 'react-query';
+import {api} from "../utilities/api";
+import {LoadD} from "../js/noticeDesign";
 import { DateRangePicker ,
-
         Form,
         Button,
         // CheckboxGroup,
@@ -29,36 +23,37 @@ import { DateRangePicker ,
         Message,
         toaster,
         FlexboxGrid
-      } from 'rsuite';
-import { Cookie } from '@mui/icons-material';
-    //   import JSONTree from 'react-json-tree';
-    //   const { allowedMaxDays, allowedDays, allowedRange, beforeToday, afterToday, combine } = DateRangePicker;
+    } from 'rsuite';
+    
+
 const { afterToday } = DateRangePicker;
-const urlSchedule = urlCookie+'AdminMain/getCatCheckForAdmin';
-// const urlCookie = Cookies.get('url') == undefined ? "http://localhost/checker/" : Cookies.get('url');
-// console.log(urlCookie);
-// export var boolPagination_ = {};
-// const rootTable = ReactDOM.create(document.getElementById('idFormAllUsersContainer'));
+const urlSchedule = urlCookie+'AdminMain/getScheduleForSelect';
 export var dataParam = {};
+
+var dataGlobal = {};
 const Field = React.forwardRef((props, ref) => {
     const { name, message, label, accepter, data ,error, ...rest } = props;
+    
+    if(props.name == "initDate" || props.name == "finalDate" ) {
+
+    }else{
+        // console.warn("DATA",props);  
+        // props.value =null;  
+    }
     return (
         // className="fieldInputBlockContainer"
     <Form.Group controlId={`${name}`} ref={ref} className={error ? 'has-error' : 'fieldInputBlockContainer'}>
         <Form.ControlLabel  className="fieldLabelCustome">{label} </Form.ControlLabel>
-        <Form.Control data={data} name={name} accepter={accepter} errorMessage={error} {...rest} />
+        <Form.Control data={data} name={name} accepter={accepter} errorMessage={error} {...rest}  />
         <Form.HelpText>{message}</Form.HelpText>
     </Form.Group>
     );
 });
 const {DateType,StringType} = Schema.Types;
 var countProps = 0;
+var objHEre = {};
 export var boolPagination_ = false;
 
-
-
-
-// const { ArrayType, NumberType ,DateType,StringType} = Schema.Types;
 const model = Schema.Model({
     // skills: ArrayType()
     //     .minLength(2, 'Please select at least 2 types of Skills.')
@@ -66,6 +61,11 @@ const model = Schema.Model({
     // createDate: StringType().isRequired("This field is required."),
     initDate: DateType().isRequired('This field is required.'),
     selectSchedule: StringType().isRequired('This field is required.'),
+    selectSchedulecompanyGlobal: StringType().isRequired('This field is required.'),
+    // selectSchedulecompanySucursal: StringType().isRequired('This field is required.'),
+    // selectSchedulecatCheck: StringType().isRequired('This field is required.'),
+    // selectScheduleJob: StringType().isRequired('This field is required.'),
+    // selectScheduleJob: StringType().isRequired('This field is required.'),
     finalDate: DateType().isRequired('This field is required.').addRule((value, data) => {
         console.warn(data.initDate);
         console.warn(value);
@@ -80,33 +80,58 @@ const model = Schema.Model({
             return false;
         }
 
-        // if(data.initDate==undefined){
-        //     return true;
-        // }
-
       }, 'Fecha final es menor que fecha Inicial.'),
-    // status: ArrayType()
-    //     .minLength(2, 'Please select at least 2 types of Status.')
-    //     .isRequired('This field is required.'),
-    // level: NumberType().min(5, 'This field must be greater than 5')
+
     });
 
-    // async function add1(x) {
-    //     const a = await resolveAfter2Seconds(20);
-    //     const b = await resolveAfter2Seconds(30);
-    //     return x + a + b;
-    //   }
+    
+
+
+
+
+    // console.log(recuperado)
+    
+
+
+
+
+
+
 
     const  App =  () => {
-    const formRef = React.useRef();
-    var state = {disabled:true};
-    // disabled  =  {this.state.disabled}
-    const [test, setTest] = React.useState({
-        load:true
-    });
-    const [articulos, setArticulos] = React.useState([])
-    const [recuperado, setRecuperado] = React.useState([]);
+    var formRef = React.useRef();
+    // var initTemplate = 0;
+    
+    var state = {disabled:false};
+    const [template, setTemplate] = React.useState({});
+
+    // const [test, setTest] = React.useState({
+    //     load:true
+    // });
+    // const { isLoading, isError, isSuccess, data, isFetching , refetch }
+
+    // const [recuperado, setRecuperado] = React.useState([1,2,3,4]);
+    // selectField
+    const [selectField, setSelect] = React.useState([
+        {name: 'companyGlobal', label: 'Compañía', value: ''}, 
+        {name: 'companySucursal', label: 'Sucursal', value: ''},
+        {name: 'catCheck', label: 'Horario', value: ''},
+        {name: 'job', label: 'Empleo', value: ''}
+    ]);
+    const [selectFieldAux, setSelectAux] = React.useState([]);
+
+    const [jsonDataFilters, setJsonDataFilters] = React.useState([]);
+    const [nextDataAux, setNextDataAux] = React.useState({});
+    const [dataSelectByField, setDataSelectByField] = React.useState([
+        
+        // {'companyGlobal' : {name: 'companyGlobal', label: 'Compañía', value: ''}}, 
+        // {'companySucursal':{name: 'companySucursal', label: 'Sucursal', value: ''}},
+        // {'catCheck':{name: 'catCheck', label: 'Horario', value: ''}},
+        // {"job":{name: 'job', label: 'Empleo', value: ''}}
+
+    ]);
     const [formError, setFormError] = React.useState({});
+    var seleccion = [""];
     const [formValue, setFormValue] = React.useState({
         number: 10,
         skills: ['Node.js'],
@@ -114,175 +139,188 @@ const model = Schema.Model({
         status: ['open'],
         level: 1,
         level2: 1,
-        createDate: new Date()
+        createDate: new Date(),
+        selectPicker: "",
+        // stringers : String,
     });
-    
-    const HandleSubmit = () => {
 
-        console.log( formRef.current);
-      if (!formRef.current.check()) {
-        toaster.push(<Message type="error">Error</Message>);
-        
+    const  HandleSubmit = async () => {
+
+        console.log( selectField);
+      if (
+        // !formRef.current.check()
+        formRef.current.root[0].value=="" ||
+        formRef.current.root[1].value== "" ||
+        selectField[0].value==""
+        ) {
+            formRef.current.check()
+        // toaster.push(<Message type="error">Error</Message>);
+        console.log("ENTRA");
         return;
     }
     else{
     //   AQUI
-        toaster.push(<Message type="success">Success</Message>);
-        // FormAllUsers
-        // alert("HOL");
-        // rootTable.render(<FormAllUsers  />);
-        // . 
-        // ReactDOM.render(
-        //    ""
-            // , document.getElementById("idFormAllUsersContainer"));
+        // toaster.push(<Message type="success">Success</Message>);
+
             let array = formRef.current.root;
             dataParam = new URLSearchParams("");
-            let objHEre = {count:countProps};
+            let postAux = {};
+            objHEre = {count:countProps};
             countProps ++;
-            for(let i = 0; i< array.length; i++){
+            // for(let i = 0; i < array.length; i++){
+            for(let i = 0; i < array.length; i++){
+                // dataParam
                 // console.log(array[i]);
                 let id = array[i].id ;
-                if(id!=""||id!=null){
+                if(id=="initDate" ||id=="finalDate" ){
                     // dataParam[id] = array[i].value ;
                     objHEre[id] = array[i].defaultValue ;
-                    // console.log((array[i].defaultValue).toString() );
+                    
                     dataParam.append(id, array[i].defaultValue );
                     // dataParam.append('finalDate', '2022-10-21');
 
                 }
-                // console.log(id);
-                // dataParam[]
+            
             }
-            console.log(objHEre);
-            // console.log(dataParam);
-            // console.log(array[i]);
-            // console.log(formRef.current.);
-            let reset = {pagination:true};
-            boolPagination_ = true;
-            // boolChange = true;
-            // console.log(boolPagination_);
-            // this.state.container.load = false;
+           
+            dataParam.append("filters",JSON.stringify(selectField)); 
+            // dataParam.append("Filters",selectField);
+            // console.warn("PARA AJAx",selectField);
+            boolPagination_ = true;        
             state.disabled = true;
-        ReactDOM.render(
-            <FormAllUsers  propiedad={objHEre} resetPagination ={reset}
-                container ={ {load:true}}
-                setTest = {setTest}
-                test = {test}
-            />
-            , document.getElementById("idFormAllUsersContainer"));
+            // alert(state.disabled);
+            setTemplate({post:dataParam,stept:1,count:countProps,disabled:true});
+            console.log(template);
+            ReactDOM.render(
+                                <FormAllUsers  
+                                propiedad={[]} 
+                                json = {[]}
+                                container ={ {load:true}}
+                                setTest = {[]}
+                                test = {{load:true}}
+                                preLoad = {true}
+                            />
+                , document.getElementById("idFormAllUsersContainer"));
+
+            let post = dataParam;
+            console.log("ANTES",post);
+            var result = {};
+
+            try{
+            result = await api.post("AdminMain/index",dataParam);
+            console.log("AWAIT",result);
+            ReactDOM.render(
+                <FormAllUsers  
+                        propiedad={objHEre} 
+                        // resetPagination ={reset}
+                        json = {result}
+                        container ={ {load:true}}
+                        setTest = {[]}
+                        test = {{load:true}}
+                        reset = {true}
+                    />
+                , document.getElementById("idFormAllUsersContainer"));
+            }
+            catch(error){
+                console.log(error);
+                ReactDOM.render(
+                    <FormAllUsers  
+                                propiedad={[]} 
+                                json = {[]}
+                                container ={ {load:true}}
+                                setTest = {[]}
+                                test = {{load:true}}
+                                error = {true}
+                        />
+                    , document.getElementById("idFormAllUsersContainer"));
+            }
+            
+
+            // console.log(typeof(result));
+            // if(result.error){
+            //     alert();
+            // }
+                
+            
+                state.disabled = false;
+                setTemplate({});
+
+            // console.log(result);
+                
+            // console.log("desouesS");
+
+        
+            // console.log(template);
+            dataGlobal = template;
+            
         }
-        // setRecuperado([]);
+        // console.error(test);
         
-        console.error(test);
-        
-        
-        // console.log(<FormAllUsers></FormAllUsers>);
 
-            // React.useEffect(() => {
-            //     setTest({load:false});
-            //     console.log(test);
-            //     });
-            //     console.log(test);
                 }
-    // React.useEffect(() => {
-    //     const timer = setTimeout(() => {
-                
-    //             // boolChange = false;
-    //             boolPagination_ = false;
-    //             console.log(boolPagination_ + "---")
-    //             // setPage(1);
-    //         }, 1000);
-    //         return () => clearTimeout(timer);
-    //     });
-    // const [page, setPage] = React.useState(0);
-    // React.useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         console.log(`You ${boolPagination_} times`);
-    //         // boolPagination_ = false;
-    //     }, 1000);
-    //     return () => clearTimeout(timer);
-    // }, [boolPagination_]);
-    // console.log("HOLA");
-    
-    // var test_ = {};
-    // const prueba =  () => {
-    //     fetch('http://localhost/checker/AdminMain/getCatCheckForAdmin')
-    //     .then((response) => {
 
-    //         console.log(response);
-    //         return response.json()
-    //         });
-    // }
-    // console.log(prueba());
-    // hideContainer("idContainerAbsolute");
-    // const asyncGreeting = async () => { 
-        
-    //     fetch('http://localhost/checker/AdminMain/getCatCheckForAdmin')
-    //         .then(response => response.json())
-    //          .then((response) => {
-    //             return response
-    //         });
-        
-    // }
-
-
-            // console.log(asyncGreeting);
-            // .then((articulos) => {
-            // setArticulos(articulos);
-            // let dataHere = articulos.data;
-            // let new_ = dataHere;
-            // Object.entries(new_).forEach(([key, value]) => {
-
-            //         recuperado.push({label: value.name , value: value.idCatCheck});
-            // });
-    // asyncGreeting().then(result => console.log(result));
-    // console.log(asyncGreeting)
     React.useEffect(() => {
-        console.log(test);
-        // setTest = {setTest}
-        // test = {test}
-
-        fetch(urlSchedule,{
-            // fetch('http://localhost/checker/AdminMain/getCatCheckForAdmin',{
-                // mode: 'cors', // <---
-                // cache: 'default',
-                // headers: new Headers({ 'Content-type': 'application/json'}),
-            //     header:{
-            //         'Content-Type': 'application/json',
-            //         'Access-Control-Allow-Origin': '*'
-            //   },
-                // mode: 'no-cors'
-            })
+        // console.log(test);
+        // console.log("INICIANDO");
+        fetch(urlSchedule,{})
             .then(response => response.json())
-          .then((articulos) => {
-            setArticulos(articulos);
-            let dataHere = articulos.data;
+        .then((articulos) => {
+            console.log(articulos);
+
+            let dataHere = articulos.data.info.select;
             let new_ = dataHere;
+        
+            console.log(new_)
             let te = [];
-            // recuperado = [
-            Object.entries(new_).forEach(([key, value]) => {
-                
-                te.push({label: value.name , value: value.idCatCheck});
+            let newData = [];
+            new_.forEach((element,index) => {
+                new_[index]["value"] = "";
+                if(index!=0)
+                newData[element.name] = [{label: "Seleccione "+element.label , value: "" }];
             });
 
-            // console.log("")
-            // item => ({ label: item, value: item })
-            state.disabled = false;
-            setRecuperado(te);
+            te.push({label: "Seleccione una Compañia" , value: "" ,});
+
+                let companyGlobal = articulos.data.data.companyGlobal;
+            Object.entries(companyGlobal).forEach(([key, value]) => {
+          
+                te.push({value: key, label:value.name });
+            });
+
+            te.push({label: "Todos" , value: "ALL"});
+            newData["companyGlobal"] = te;
+            // console.log({companyGlobal:te});
+            
+            // setDataSelectByField(te);
+            
+            setDataSelectByField(newData);
+            // Object.entries
+        // ];
+
+            
+            // state.disabled = false;
+            console.log(te,new_);
+            // console.log(dataSelectByField)
+            setJsonDataFilters(articulos.data);
+            setSelect(new_);
+            setSelectAux(new_)
     });
     }, []);
+    const eventValue = (e) =>{
+        console.log(e);
+        let re =  e==undefined ? "" : "0";
+        return re;
+    }
 
-
-    // const data_ =  [];
-    console.log(recuperado)
-    
-    //   console.log(test_);
     return  (
+    
+        <div className=''>
         <FlexboxGrid className="formWidthSearchContainer">
             <FlexboxGrid.Item /*colspan={}*/ className="formWidthSearchContainer">
                 <Form
                 ref={formRef}
-                onChange={setFormValue}
+                // onChange={setFormValue},
+                onChange = {formValue => setFormValue(formValue)}
                 onCheck={setFormError}
                 formValue={formValue}
                 model={model}
@@ -293,6 +331,7 @@ const model = Schema.Model({
                     name="initDate"
                     label="Fecha Inicio"
                     errorMessage={formError.createDate}
+                    
                     // className="fieldInputBlockContainer"
                     // id="idRange"
                     // name="date"
@@ -316,7 +355,209 @@ const model = Schema.Model({
                     placeholder="Selecciona la fecha" 
                 />
 
-                <Field  
+                
+
+                <div className="contentSelectFilters">
+                    {selectField.map((dataRow,index) => (
+                        
+                        // console.log(dataRow.name),
+                        // console.error("COMENZANDO", dataRow),
+                        <Field  
+                        key={dataRow.name+"_"+index}
+                    
+                        onChange={(e)=>{
+                            // const [jsonDataFilters, setJsonDataFilters] = React.useState([]);
+                            // console.log(jsonDataFilters);
+                            console.log(e);
+                            // setDataNew
+
+                            if(e==""){
+                                selectField[index]["value"] = e;
+                                selectField.forEach( (element,subIndex) => {
+                                let nameHere_ = element.name;
+                                if(index<subIndex){
+                                    selectField[subIndex].value = "";
+                                    dataSelectByField[nameHere_] = [];
+                                    console.error("SOLO",nameHere_,selectField[subIndex])
+                                }
+                            
+
+                            });
+                            console.warn(index,selectField);
+                            setSelect(selectField);
+                                return false;
+                            }
+                            if(e=="ALL"){
+                                let nameNow = dataRow.name
+                                // let idName =  index != selectField.length -1 ? array_[1][0] : array_[0][0]; //array_[1][0];
+                            // let dataPush = index != selectField.length -1 ? array_[1][1] : array_[0][1];
+                                let afterData = index != selectField.length -1 ? selectField[index+1] : selectField[index]  ;
+                                console.warn(afterData);
+                                // let anotherData =  index==0 ? jsonDataFilters.data : nextDataAux[index];
+                                let anotherData =  index==0 ? jsonDataFilters.data : nextDataAux[index-1];
+                                // nextDataAux
+
+                                selectField[index]["value"] = e;
+                                
+                                selectField.forEach( (element,subIndex) => {
+                                // console.error(subIndex,element);
+                                let nameHere_ = element.name;
+                                if(index<subIndex){
+                                    selectField[subIndex].value = "";
+                                    dataSelectByField[nameHere_] = [];
+                                    console.error("SOLO",nameHere_,selectField[subIndex])
+                                    
+                                    // selectField[subIndex]
+                                    
+                                }
+                            
+
+                            });
+                            console.warn(index,selectField);
+                            setSelect(selectField);
+
+                                // let dataN = index==0 ? jsonDataFilters.data[name] : nextDataAux[index-1][name] ;
+                                console.log(anotherData,nextDataAux);
+                                // let idName =  index != selectField.length -1 ? array_[1][0] : array_[0][0]; //array_[1][0];
+                            // let dataPush = index != selectField.length -1 ? array_[1][1] : array_[0][1];
+                                let nameNext = afterData.name;
+                                let allNext_before= Object.entries(anotherData[nameNow]);
+                                let arrayNextReturn =  [{label: "Seleccione "+dataRow.label , value: ""}];
+                                // let convertData = [{label: "Seleccione "+dataRow.label , value: ""}];
+                                console.log(allNext_before);
+                                let ePlus =  nextDataAux;
+                                // let ePlus =  Object.entries(nextDataAux).length == 0 ? {}: ;
+                                console.error("ERROR",ePlus)
+                                ePlus[index] = {};
+                                ePlus[index]["name"] = "ALL";
+
+                                let arrayNowInsertData = {};
+                                allNext_before.forEach(element => {
+                                    
+                                        let secondPart = element[1];
+                                        let arraySubNext = Object.entries(secondPart[nameNext]);
+                                    
+                                        arraySubNext.forEach(element => {
+                                            let numberId = element[0];
+                                            let data = element[1];
+                                            
+                                            console.log(data);
+                                            // if(numberID)
+                                            if(data.name==null){
+
+                                            }
+                                            else{
+                                            arrayNowInsertData[numberId] = data;
+                                            arrayNextReturn.push({value:numberId,label:data.name});
+                                            }
+                                            // arrayNextReturn.push({name:element.name})
+                                        });
+                                        
+                                });
+                                arrayNextReturn.push({label: "Todos" , value: "ALL"});
+                                // setDataNew[nameNext] = arrayNextReturn ;
+                                // setDataSelectByField(setDataNew);
+                                let setDataNew = dataSelectByField;
+                                setDataNew[nameNext] = arrayNextReturn ;
+                                console.warn(arrayNowInsertData);
+                                ePlus[index] = {};
+                                ePlus[index][nameNext] = arrayNowInsertData;
+                                ePlus[index]["name"]= "ALL";
+                                console.warn(ePlus);
+                                setDataSelectByField(setDataNew);
+                                setNextDataAux(ePlus);
+                        
+                                return false;
+                                // jsonDataFilters.data[name] : nextDataAux[index-1][name] ;
+                            }
+                            let name = dataRow.name;
+                            let dataN = index==0 ? jsonDataFilters.data[name] : nextDataAux[index-1][name] ;
+                            let ePlus = nextDataAux;
+                            ePlus[index]=dataN[e];
+                            // ePlus.push(e);
+                            
+                            let array_ = Object.entries(ePlus[index]);
+                            console.error("CONOCIENDO",ePlus,array_, index, selectField.length);
+                            let idName =  index != selectField.length -1 ? array_[1][0] : array_[0][0]; //array_[1][0];
+                            let dataPush = index != selectField.length -1 ? array_[1][1] : array_[0][1];
+                            // console.log(idName,array_,dataPush);
+                            let convertData = [{label: "Seleccione "+dataRow.label , value: ""}];
+                            // convertData.push({label: "Todos" , value: "ALL"});
+                            Object.entries(dataPush).forEach(                               
+                                    element => {
+
+                                        let numberId = element[0];
+                                        let data = element[1];
+                                        console.log(data);
+                                        if(data.name==null){               }
+                                        else{
+                                        // arrayNowInsertData[numberId] = data;
+                                        convertData.push({value:numberId,label:data.name});
+                                        }
+                                    }
+                                        
+                            
+    
+                                    
+                                );
+
+                                
+                                selectField[index]["value"] = e;
+                                
+                                selectField.forEach( (element,subIndex) => {
+                                // console.error(subIndex,element);
+                                let nameHere_ = element.name;
+                                if(index<subIndex){
+                                    selectField[subIndex].value = "";
+                                    dataSelectByField[nameHere_] = [];
+                                    console.error("SOLO",nameHere_,selectField[subIndex])
+                                    
+                                    // selectField[subIndex]
+                                    
+                                }else{
+                                  
+                                }
+                            
+
+                            });
+
+                            // document.getElementById("selectSchedulecompanyGlobal").value = "HEHE"
+                            console.warn(index,selectField);
+                            setSelect(selectField);
+                            // console.error("Entonces",dataSelectByField,selectField,selectFieldAux);
+                            
+                            convertData.push({label: "Todos" , value: "ALL"});
+                            let setDataNew = dataSelectByField;
+                            setDataNew[idName] = convertData ;
+                            setDataSelectByField(setDataNew);
+                        
+                            setNextDataAux(ePlus);
+                            
+
+                        }}
+                        accepter={SelectPicker}
+                        name= {`selectSchedule${dataRow.name}`}
+                        label={dataRow.label}
+                        // errorMessage={formError.selectPicker}
+                        // value = {selectField[index]["value"]}
+                        value = {selectField[index]["value"]}
+                        cleanable = {false}
+                        // defaultValue={[dataSelectByField[dataRow.name][0]]}
+                        // defaultValue={ [{ label: "Select Dept", value: "" }]}
+                        data = {
+                            // console.log(dataSelectByField[dataRow.name]),
+                            dataSelectByField[dataRow.name]
+                        
+                        }
+                        
+                        // value = {console.log( dataSelectByField[dataRow.name][index]["value"]),""}
+                        // valueKey = {"HOLA"}
+                        placeholder="Selecciona el Horario" 
+                    />
+                    ))}
+                </div>
+                
+                {/* <Field  
                     accepter={SelectPicker}
                     name="selectSchedule"
                     label="Horario"
@@ -329,33 +570,42 @@ const model = Schema.Model({
                     // onSelect={value => {getValue(value, 'yyyy/MM/dd')}}
                     // disabledDate={afterToday()}
                     placeholder="Selecciona el Horario" 
-                />
+                /> */}
 
                 <Form.Group>
-                    <Button style={{backgroundColor:"#00e500",color:"black",fontWeight:"600"}} id="idSubmitSearch" disabled  =  {recuperado.length===0 ? true : false} appearance="primary" onClick={HandleSubmit}>
+                    <Button style={{backgroundColor:"#00e500",color:"black",fontWeight:"600"}} id="idSubmitSearch" 
+                    disabled  =  {selectField.length===0 || selectField.disabled ? true : false} appearance="primary" onClick={HandleSubmit}>
                     Enviar
                     </Button>
                 </Form.Group>
                 
                 </div>
                 
-            {/* <div> */}
-            {/* <br></br> */}
-            {/* <Form.Group> */}
-            
-                {/* </Form.Group> */}
-                 {/* </div> */}
-            
-          
                 
                 </Form>
+
+
             </FlexboxGrid.Item>
             
             </FlexboxGrid>
+
+            {/* <div>
+                <br></br>  
+                <TemplateComponent props = {template}/>
+                
+                
+            </div> */}
+
+            </div>
             
             
+
         );
     };
 
-    export default App;
 
+  
+
+
+
+    export default App;

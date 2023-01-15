@@ -7,10 +7,6 @@ import FormUsers from "./js/FormUsers"
 
 import FormAllUsers from './App';
 import reportWebVitals from './reportWebVitals';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
-// import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,16 +14,17 @@ root.render(
   <React.StrictMode>
     
     <StyledEngineProvider injectFirst>
-      <FormUsers />
+          {/* <QueryClientProvider client={queryClient}> */}
+              <FormUsers className="" />
+              
+          {/* </QueryClientProvider> */}
     </StyledEngineProvider>
     <div className="containerLoad_Relative">
           
+          <div id ="idFormAllUsersContainer" > 
+          </div>
           
-      {/* </div>  */}
-      <div id ="idFormAllUsersContainer" > 
-      {/* <FormAllUsers  /> */}
-      </div>
-    </div>
+        </div>
   </React.StrictMode>
 );
 

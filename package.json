@@ -2,7 +2,7 @@
   "name": "checker",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://RupertsVargas.github.io/ReportsUsers",
+  "homepage": ".",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -32,6 +32,8 @@
     "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
     "react-json-tree": "^0.17.0",
+    "react-query": "^3.39.2",
+    "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
     "rsuite": "^5.19.0",
