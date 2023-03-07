@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {HeaderTable} from './js/htmlOfJs.js';
+import Button from 'react-bootstrap/Button';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch,faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSearch,faSpinner,faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import {dataParam} from "./js/FormUsers";
 import { SelectPicker } from 'rsuite';
@@ -891,6 +892,7 @@ class FormAllUsers extends Component {
   // alert(URLhash);
   // alert(URLhash);
   // this.state.view==="Reporte Detalle" || 
+  // let tittleReport = URLhash ==="#details" ? "Reportes Detalle"  : "Reporte Consolidad";
   whoDataTableIs = 
   URLhash ==="#details" ?  
   (<DataTable   
@@ -924,7 +926,7 @@ class FormAllUsers extends Component {
                             // progressComponent={<CustomLoader />}
                             // noHeader={true}
           /> ) :     
-         < DataReportGlobal progressPending={this.props.container.load} data={dataUsersGlobal} search={this.state.searchForAnother}/>;
+        <DataReportGlobal progressPending={this.props.container.load} data={dataUsersGlobal} search={this.state.searchForAnother}/>;
 
   let display_ = this.props.container.load === true ? "none" : "block";
   let style_Event = (this.state.campeones).length ===0 ?  {opacity:"0.5",pointerEvents:"none"} : {};
@@ -933,15 +935,25 @@ class FormAllUsers extends Component {
   return (
     
     // {this.}
-  
+    
     // {console.log("")}
     <div className="table-responsive" 
     // style={{display:display_}}
     >
-
  
 
+
     <br></br>  
+    <div>
+    <Button onClick={()=>{
+      let linkDownLoad = this.props.json.details.encryptPostDownload;
+      console.warn(linkDownLoad);
+      window.open( urlCookie+"AdminApiReportjobs/reportJobsExport2/"+linkDownLoad);
+    }} variant="success"> <FontAwesomeIcon icon={faFileExcel} /> 
+    <span>{' Descargar el contenido'}</span>
+    </Button>
+    
+    </div>
     <div className='contentFiltersAboutTable' style={style_Event} >
       {/* <SelectPicker cleanable={false}  
       data={dataSelectPicker}

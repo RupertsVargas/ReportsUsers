@@ -4,16 +4,16 @@ import { faTriangleExclamation,faSpinner,faUserSlash } from "@fortawesome/free-s
 {/* <i class="fas fa-user-slash"></i> */}
 {/* <i class="fa-solid fa-triangle-exclamation"></i> */}
 export const LoadD = () => {
-    console.log("CARGANDO");
-    return (
-    <div className="loadContainerPre">
-    <div className="loadContainerM" >
-    <FontAwesomeIcon icon={faSpinner} spin className='iconCustom' />
-    <br></br>
-    <div className="letterContainer">Cargando</div>
-  </div>
-  </div>
-  )
+  console.log("CARGANDO");
+  return (
+  <div className="loadContainerPre">
+  <div className="loadContainerM" >
+  <FontAwesomeIcon icon={faSpinner} spin className='iconCustom' />
+  <br></br>
+  <div className="letterContainer">Cargando</div>
+</div>
+</div>
+)
 }
 
 export const NoOneD = () => {

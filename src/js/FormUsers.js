@@ -287,7 +287,14 @@ const model = Schema.Model({
                 te.push({value: key, label:value.name });
             });
 
-            te.push({label: "Todos" , value: "ALL"});
+
+            let sizeFilter = (Object.values(companyGlobal));
+            // console.log("companyGlobal",(Object.values(companyGlobal)));
+            // LISTO TOD@S
+            if(sizeFilter.length>1){
+                te.push({label: "Todos" , value: "ALL"});
+            }
+            
             newData["companyGlobal"] = te;
             // console.log({companyGlobal:te});
             
@@ -312,9 +319,17 @@ const model = Schema.Model({
         return re;
     }
 
+    let URLhash = window.location.hash;
+    console.log(URLhash);
+    // alert(URLhash);
+    // alert(URLhash);
+    // this.state.view==="Reporte Detalle" || 
+    let tittleReport = URLhash ==="#details" ? "Reportes Detalle"  : "Reporte Consolidad";
+
     return  (
-    
+        
         <div className=''>
+            <div>{tittleReport}</div>
         <FlexboxGrid className="formWidthSearchContainer">
             <FlexboxGrid.Item /*colspan={}*/ className="formWidthSearchContainer">
                 <Form
@@ -454,7 +469,13 @@ const model = Schema.Model({
                                         });
                                         
                                 });
-                                arrayNextReturn.push({label: "Todos" , value: "ALL"});
+
+                                let sizeFilter = (Object.values(arrayNextReturn));
+                                if(sizeFilter.length>1){
+                                    // te.push({label: "Todos" , value: "ALL"});
+                                    arrayNextReturn.push({label: "Todos" , value: "ALL"});
+                                }
+                                
                                 // setDataNew[nameNext] = arrayNextReturn ;
                                 // setDataSelectByField(setDataNew);
                                 let setDataNew = dataSelectByField;
@@ -526,7 +547,13 @@ const model = Schema.Model({
                             setSelect(selectField);
                             // console.error("Entonces",dataSelectByField,selectField,selectFieldAux);
                             
-                            convertData.push({label: "Todos" , value: "ALL"});
+                            let sizeFilter = (Object.values(convertData));
+                            console.log("SIZE",sizeFilter)
+                            // LISTO TOD@S
+                                if(sizeFilter.length>1){
+                                    convertData.push({label: "Todos" , value: "ALL"});
+                                }
+                            
                             let setDataNew = dataSelectByField;
                             setDataNew[idName] = convertData ;
                             setDataSelectByField(setDataNew);

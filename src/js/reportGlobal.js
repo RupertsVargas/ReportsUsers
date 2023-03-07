@@ -39,7 +39,7 @@ const columns = [
     },
     {
         name: 'Horas Extras',
-        selector: row => row.extraTime,
+        selector: row => row.timeExtra,
         sortable: true,
         // selector: row => row.min,
     },
@@ -222,7 +222,7 @@ const customStyles = {
 };
 
 export const DataReportGlobal = (props) => {
-    console.log(props);
+    console.log("PORPS",props);
     let dataHere = data(props);
     let textPre = "Cargando";
     let dateInfo = textPre;

@@ -25,7 +25,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import {faCircle, faInfo, faHeart, faCircleCheck,faCircleXmark,faCircleExclamation ,
 import {faCircle, faCircleCheck,faCircleXmark,faCircleExclamation ,
-  faEye,faEyeSlash,faPenToSquare,
+  faEye,faEyeSlash,faPenToSquare,faBed,faGift,faGifts,
   faMagnifyingGlass,faPencil, faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons";
 import 'moment/locale/es';
@@ -75,7 +75,7 @@ function setImgResult(url_="NA",path,class_="imgResult_"){
   function createData(obj={},dataAll={},fecha ) {
     let index = obj.dateNormalFormat;
     
-    
+    // <i class="fa-solid fa-bed"></i>
     // console.log(obj);
     // console.log(obj.data); 
       let exist_ = obj.void ? false : true;
@@ -105,14 +105,85 @@ function setImgResult(url_="NA",path,class_="imgResult_"){
       if(statusComplete==1){
         // complete = setImgResult("Correcto",dataAll.info.url);
         complete = <FontAwesomeIcon icon={faCircleCheck} className="classIconCustom2"/>
+        
+        // if(obj.whyItsFree){
+        //   if(obj.whyItsFree!==false){
+
+        //     let resKey = Object.keys(obj.whyItsFree)[0]; // Sera el valor del key test
+        //   // alert(resultado);
+        //     console.warn(obj.whyItsFree,resKey);
+        //     if(resKey == "holiday" ){
+        //       complete = <FontAwesomeIcon icon={faGifts} className="classIconCustom2"/>
+        //     }
+        //     if(resKey == "break" ){
+        //       complete = <FontAwesomeIcon icon={faBed} className="classIconCustom2"/>
+        //     }
+  
+        //   }
+        // }
+
+
       }
       if(statusComplete==2){
         // complete =  setImgResult("Incorrecto",dataAll.info.url);
         complete =  <FontAwesomeIcon icon={faCircleExclamation} className="classIconCustom2" />
+
+        // if(obj.whyItsFree){
+        //   if(obj.whyItsFree!==false){
+
+        //     let resKey = Object.keys(obj.whyItsFree)[0]; // Sera el valor del key test
+        //   // alert(resultado);
+        //     console.warn(obj.whyItsFree,resKey);
+        //     if(resKey == "holiday" ){
+        //       complete = <FontAwesomeIcon icon={faGifts} className="classIconCustom2"/>
+        //     }
+        //     if(resKey == "break" ){
+        //       complete = <FontAwesomeIcon icon={faBed} className="classIconCustom2"/>
+        //     }
+  
+        //   }
+        // }
+
+
       }
       if(statusComplete==0){
         // complete =  setImgResult("NA",dataAll.info.url);
         complete =  <FontAwesomeIcon icon={faCircleXmark} className="classIconCustom2" />
+
+        // if(obj.whyItsFree){
+        //   if(obj.whyItsFree!==false){
+
+        //     let resKey = Object.keys(obj.whyItsFree)[0]; // Sera el valor del key test
+        //   // alert(resultado);
+        //     console.warn(obj.whyItsFree,resKey);
+        //     if(resKey == "holiday" ){
+        //       complete = <FontAwesomeIcon icon={faGifts} className="classIconCustom2"/>
+        //     }
+        //     if(resKey == "break" ){
+        //       complete = <FontAwesomeIcon icon={faBed} className="classIconCustom2"/>
+        //     }
+  
+        //   }
+        // }
+
+
+      }
+
+
+      if(obj.whyItsFree){
+        if(obj.whyItsFree!==false){
+
+          let resKey = Object.keys(obj.whyItsFree)[0]; // Sera el valor del key test
+        // alert(resultado);
+          console.warn(obj.whyItsFree,resKey);
+          if(resKey == "holiday" ){
+            complete = <FontAwesomeIcon icon={faGifts} className="classIconCustom2"/>
+          }
+          if(resKey == "break" ){
+            complete = <FontAwesomeIcon icon={faBed} className="classIconCustom2"/>
+          }
+
+        }
       }
 
       // if
