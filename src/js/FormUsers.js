@@ -24,6 +24,7 @@ import { DateRangePicker ,
         toaster,
         FlexboxGrid
     } from 'rsuite';
+import { fontSize } from '@mui/system';
     
 
 const { afterToday } = DateRangePicker;
@@ -113,15 +114,16 @@ const model = Schema.Model({
     // const [recuperado, setRecuperado] = React.useState([1,2,3,4]);
     // selectField
     const [selectField, setSelect] = React.useState([
-        {name: 'companyGlobal', label: 'Compañía', value: ''}, 
-        {name: 'companySucursal', label: 'Sucursal', value: ''},
-        {name: 'catCheck', label: 'Horario', value: ''},
-        {name: 'job', label: 'Empleo', value: ''}
+        {name: 'companyGlobal', label: 'Compañía', value: '',disabled:false}, 
+        {name: 'companySucursal', label: 'Sucursal', value: '',disabled:false},
+        {name: 'catCheck', label: 'Horario', value: '',disabled:false},
+        {name: 'job', label: 'Empleo', value: '',disabled:false}
     ]);
     const [selectFieldAux, setSelectAux] = React.useState([]);
 
     const [jsonDataFilters, setJsonDataFilters] = React.useState([]);
     const [nextDataAux, setNextDataAux] = React.useState({});
+    const [details, setDetails] = React.useState({});
     const [dataSelectByField, setDataSelectByField] = React.useState([
         
         // {'companyGlobal' : {name: 'companyGlobal', label: 'Compañía', value: ''}}, 
@@ -138,9 +140,11 @@ const model = Schema.Model({
         browser: 'Chrome',
         status: ['open'],
         level: 1,
+        
         level2: 1,
-        createDate: new Date(),
-        selectPicker: "",
+        // createDate: new Date(),
+        selectPicker: {},
+        // size: "sm",
         // stringers : String,
     });
 
@@ -163,6 +167,7 @@ const model = Schema.Model({
         // toaster.push(<Message type="success">Success</Message>);
 
             let array = formRef.current.root;
+            let sucursalName = "";
             dataParam = new URLSearchParams("");
             let postAux = {};
             objHEre = {count:countProps};
@@ -177,6 +182,8 @@ const model = Schema.Model({
                     objHEre[id] = array[i].defaultValue ;
                     
                     dataParam.append(id, array[i].defaultValue );
+
+                    // console.log(array[i].defaultValue)
                     // dataParam.append('finalDate', '2022-10-21');
 
                 }
@@ -209,9 +216,13 @@ const model = Schema.Model({
             try{
             result = await api.post("AdminMain/index",dataParam);
             console.log("AWAIT",result);
+            // VOLVER PARA 
+            // setDetails
+            
             ReactDOM.render(
                 <FormAllUsers  
                         propiedad={objHEre} 
+                        details = {details}
                         // resetPagination ={reset}
                         json = {result}
                         container ={ {load:true}}
@@ -266,17 +277,53 @@ const model = Schema.Model({
             .then(response => response.json())
         .then((articulos) => {
             console.log(articulos);
-
+            setDetails(articulos.details);
             let dataHere = articulos.data.info.select;
             let new_ = dataHere;
-        
+            let details = articulos.details;
+            // articulos.details;
+            // console.log(details);
+                            // if(!details.SESSION){
+                                // return false;
+                            // }
+                            
+                            let idCompany = details.SESSION.idCompany;
+                            let idCompanyG = details.SESSION.idCompanyG;
+                            // if(selectField[index]=="companyGlobal"){
+                            //     console.log("GLOBAL0");
+                            //     // return idCompanyG;
+                            // }
+                            // if(selectField[index]=="companySucursal"){
+                            //     // return idCompany;
+                            // }
+                            // console.warn(idCompany,"PEPEPE",selectField[index]);
+                        //     return false;
             console.log(new_)
             let te = [];
             let newData = [];
             new_.forEach((element,index) => {
-                new_[index]["value"] = "";
+                // new_[index]["value"] = "";
+                // console.warn("JEJEJE",element.name);
+                let value__ = "";
+                let disabled__ = false;
+                // if(element.name=="companyGlobal" || element.name=="companySucursal" ){
+                //     // value__ = idCompanyG;
+                //     // disabled__ = true;
+                //     if(element.name=="companyGlobal"){
+                //         value__ = idCompanyG
+                //     }
+                //     if(element.name=="companySucursal"){
+                //         value__ = idCompany
+                //         disabled__ = false;
+                //     }
+                    
+                //     console.warn(value__,disabled__,index);
+                //     }
+                    new_[index]["value"] = value__;
+                    new_[index]["disabled"] = disabled__;
+                    
                 if(index!=0)
-                newData[element.name] = [{label: "Seleccione "+element.label , value: "" }];
+                newData[element.name] = [{label: "Seleccione "+element.label , value: value__ ,  }];
             });
 
             te.push({label: "Seleccione una Compañia" , value: "" ,});
@@ -299,6 +346,15 @@ const model = Schema.Model({
             // console.log({companyGlobal:te});
             
             // setDataSelectByField(te);
+
+
+
+
+            
+
+
+
+
             
             setDataSelectByField(newData);
             // Object.entries
@@ -314,22 +370,36 @@ const model = Schema.Model({
     });
     }, []);
     const eventValue = (e) =>{
-        console.log(e);
-        let re =  e==undefined ? "" : "0";
-        return re;
+        // console.log(e);
+        console.log("JEJE");
+        // let re =  e==undefined ? "" : "0";
+        // return re;
     }
 
     let URLhash = window.location.hash;
     console.log(URLhash);
     // alert(URLhash);
+    // SelectPicker.size = "sm";
+    // SelectPicker.propTypes.size = function () {
+
+        // return  "sm";
+        
+        // }
+
+    // } return ("") ;
+    console.log(SelectPicker.propTypes,"HOLA");
     // alert(URLhash);
     // this.state.view==="Reporte Detalle" || 
-    let tittleReport = URLhash ==="#details" ? "Reportes Detalle"  : "Reporte Consolidad";
+    let tittleReport = URLhash ==="#details" ? "Reportes Detalle"  : "Reporte Consolidado";
 
     return  (
         
-        <div className=''>
-            <div>{tittleReport}</div>
+        <div >
+            <div className='divTittleReport'>
+            
+                <span className='spanTittleReport' > {tittleReport} </span>
+                
+                </div>
         <FlexboxGrid className="formWidthSearchContainer">
             <FlexboxGrid.Item /*colspan={}*/ className="formWidthSearchContainer">
                 <Form
@@ -344,10 +414,10 @@ const model = Schema.Model({
             <Field  oneTap
                     accepter={DatePicker}
                     name="initDate"
-                    label="Fecha Inicio"
+                    label="Fecha Inicial"
                     errorMessage={formError.createDate}
                     
-                    // className="fieldInputBlockContainer"
+                    className="fieldBtnInput"
                     // id="idRange"
                     // name="date"
             // label ="Date"
@@ -360,7 +430,7 @@ const model = Schema.Model({
                     name="finalDate"
                     label="Fecha Final"
                     errorMessage={formError.createDate}
-                    
+                    className="fieldBtnInput"
                     // className="fieldInputBlockContainer"
                     // id="idRange"
                     // name="date"
@@ -379,11 +449,24 @@ const model = Schema.Model({
                         // console.error("COMENZANDO", dataRow),
                         <Field  
                         key={dataRow.name+"_"+index}
-                    
+                        className="fieldBtnInput"
+                        // size={()=>{return [0]}}
+                        // size={ "xs"}
+                        styles = { {width: 224, display: 'block', marginBottom: 10 ,fontSize:"10px"} }
+                        // onLoad={(e)=>{
+                        // size="sm"
+                        //     console.log(e,"LOADLOAD");
+
+                        // }}
+
+                        // onChange={(e)=>{
+                        //     eventValue(e)
+                        // }}
                         onChange={(e)=>{
                             // const [jsonDataFilters, setJsonDataFilters] = React.useState([]);
                             // console.log(jsonDataFilters);
                             console.log(e);
+                            console.log("JEJEJE SIU");
                             // setDataNew
 
                             if(e==""){
@@ -471,7 +554,7 @@ const model = Schema.Model({
                                 });
 
                                 let sizeFilter = (Object.values(arrayNextReturn));
-                                if(sizeFilter.length>1){
+                                if(sizeFilter.length>2){
                                     // te.push({label: "Todos" , value: "ALL"});
                                     arrayNextReturn.push({label: "Todos" , value: "ALL"});
                                 }
@@ -536,7 +619,7 @@ const model = Schema.Model({
                                     // selectField[subIndex]
                                     
                                 }else{
-                                  
+                                
                                 }
                             
 
@@ -548,9 +631,9 @@ const model = Schema.Model({
                             // console.error("Entonces",dataSelectByField,selectField,selectFieldAux);
                             
                             let sizeFilter = (Object.values(convertData));
-                            console.log("SIZE",sizeFilter)
+                            console.log("SIZE NORMAL",sizeFilter)
                             // LISTO TOD@S
-                                if(sizeFilter.length>1){
+                                if(sizeFilter.length>2){
                                     convertData.push({label: "Todos" , value: "ALL"});
                                 }
                             
@@ -562,9 +645,35 @@ const model = Schema.Model({
                             
 
                         }}
+                        
+                        // defaultValue = {()=>{
+                        //     console.log(details);
+                        //     if(!details.SESSION){
+                        //         return false;
+                        //     }
+                            
+                        //     let idCompany = details.SESSION.idCompany;
+                        //     let idCompanyG = details.SESSION.idCompanyG;
+                        //     if(selectField[index]=="companyGlobal"){
+                        //         console.log("GLOBAL0");
+                        //         return idCompanyG;
+                        //     }
+                        //     if(selectField[index]=="companySucursal"){
+                        //         return idCompany;
+                        //     }
+                        //     // console.warn(idCompany,"PEPEPE",selectField[index]);
+                        //     return false;
+                        // }}
+                        disabled={selectField[index]["disabled"]}
+                        // readOnly = {()=>{
+                        //     return false;
+                        // }}
+                        // defaultValue={'Bryan'} 
+                        // size = {"sm"}
                         accepter={SelectPicker}
                         name= {`selectSchedule${dataRow.name}`}
                         label={dataRow.label}
+                        
                         // errorMessage={formError.selectPicker}
                         // value = {selectField[index]["value"]}
                         value = {selectField[index]["value"]}
@@ -582,8 +691,15 @@ const model = Schema.Model({
                         placeholder="Selecciona el Horario" 
                     />
                     ))}
+
+<Form.Group>
+                    <Button  style={{backgroundColor:"#00ef00",color:"white",fontWeight:"600"}} id="idSubmitSearch" 
+                    disabled  =  {selectField.length===0 || selectField.disabled ? true : false} appearance="primary" onClick={HandleSubmit}>
+                    Enviar
+                    </Button>
+                </Form.Group>
                 </div>
-                
+                {console.log(SelectPicker,"HOLA2")}
                 {/* <Field  
                     accepter={SelectPicker}
                     name="selectSchedule"
@@ -599,12 +715,7 @@ const model = Schema.Model({
                     placeholder="Selecciona el Horario" 
                 /> */}
 
-                <Form.Group>
-                    <Button style={{backgroundColor:"#00e500",color:"black",fontWeight:"600"}} id="idSubmitSearch" 
-                    disabled  =  {selectField.length===0 || selectField.disabled ? true : false} appearance="primary" onClick={HandleSubmit}>
-                    Enviar
-                    </Button>
-                </Form.Group>
+               
                 
                 </div>
                 

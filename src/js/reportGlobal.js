@@ -39,7 +39,7 @@ const columns = [
     },
     {
         name: 'Horas Extras',
-        selector: row => row.timeExtra,
+        selector: row => row.extraTime,
         sortable: true,
         // selector: row => row.min,
     },
@@ -57,13 +57,14 @@ const columns = [
         name: 'Faltas',
         selector: row => row.faults,
         sortable: true,
-    },
-    {
-        name: 'Observaciones',
-        selector: row => row.observations,
-        sortable: true,
-        // selector: "- - -",
-    },
+    }
+    // ,
+    // {
+    //     name: 'Observaciones',
+    //     selector: row => row.observations,
+    //     sortable: true,
+    //     // selector: "- - -",
+    // },
     
 ];
 // ESTRUCTURA
@@ -123,13 +124,13 @@ const data = (arrayPre) => {
             obj = {
                 name:info.fullName,
                 category: info.jobName,
-                holyDaysDone : 0,
+                holyDaysDone : time.holidaysWorked,
                 journeys: time.journeys,
                 totalTime: ((time.timeTotal) / 60 ).toFixed(2) ,
-                extraTime: 0,
+                extraTime: ((time.timeExtra) / 60 ).toFixed(2),
                 delays:time.delays,
                 faults:time.faults,
-                observartions:"",
+                // observartions:"",
                 photo:info.pathPhotoReal
                     // holyDaysDone : "-",
             }
@@ -144,13 +145,13 @@ const data = (arrayPre) => {
         obj = {
             name:info.fullName,
             category: info.jobName,
-            holyDaysDone : 0,
+            holyDaysDone : time.holidaysWorked,
             journeys: time.journeys,
             totalTime: ((time.timeTotal) / 60 ).toFixed(2) ,
-            extraTime: 0,
+            extraTime: ((time.timeExtra) / 60 ).toFixed(2),
             delays:time.delays,
             faults:time.faults,
-            observartions:"",
+            // observartions:"",
             photo:info.pathPhotoReal
 
             // holyDaysDone : "-",
@@ -172,7 +173,7 @@ const data = (arrayPre) => {
 }
 
 
-function FunctionConvertDateInitToFinal(dateInfo){
+export function FunctionConvertDateInitToFinal(dateInfo){
     let init = dateInfo.initDate;
     let final = dateInfo.finalDate;
     // moment().get('month'); 
@@ -226,6 +227,16 @@ export const DataReportGlobal = (props) => {
     let dataHere = data(props);
     let textPre = "Cargando";
     let dateInfo = textPre;
+    let loadSession = {companyName:"Cargando ", fullname: "Cargando"}
+    let sessionData = loadSession;
+    let searchHtml = props.searchBtn ;
+    let style_Event = props.style_Event;
+    if(props.details){
+
+        sessionData = props.details["SESSION"];
+
+    }
+    
     // props.data.details.post ? props.data.details.post : [];
     let textDate = textPre;
 
@@ -240,20 +251,26 @@ export const DataReportGlobal = (props) => {
     console.log(dateInfo);
     return (
         <div className='AllContentDataReportGlobal'>
-            <div className='titleDataReportGlobal'>REPORTE CONSOLIDADO | <span>{textDate}</span>    </div>
+            <div className='titleDataReportGlobal'> <span>REPORTE CONSOLIDADO  |  <span>{textDate}</span> </span>
+            
+            <span>
+                {searchHtml}
+                </span>  
+            
+             </div>
             <div className='contentDataReportGlobal'>
                 <div className='DataPersonalByUserContent'>
                     <div>
-                        <span className="DataPersonalByUserContentTitle">Tienda: </span>
-                        <span className="DataPersonalByUserContentSet">{" "}  001 SANTO DOMING,NUEVO LEÓN</span>
+                        <span className="DataPersonalByUserContentTitle">Tienda </span>
+                        <span className="DataPersonalByUserContentSet">{": "+sessionData.companyName}  </span>
                     </div>
                     <div className='bordersMiddle'>
-                        <span  className="DataPersonalByUserContentTitle" >Gerente o R.H. </span>
-                        <span className="DataPersonalByUserContentSet">{" "} FRANCISCO MARTINEZ</span>
+                        <span  className="DataPersonalByUserContentTitle" >Gerente o R.H </span>
+                        <span className="DataPersonalByUserContentSet">{": " +sessionData.fullname}</span>
                     </div>
                     <div>
-                        <span  className="DataPersonalByUserContentTitle" >Periodo: </span>
-                        <span  className="DataPersonalByUserContentSet">{" "+textDate}</span>
+                        <span  className="DataPersonalByUserContentTitle" >Periodo </span>
+                        <span  className="DataPersonalByUserContentSet">{": "+textDate}</span>
                     </div>
                 </div>
                 <DataTable

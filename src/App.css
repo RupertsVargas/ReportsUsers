@@ -605,8 +605,9 @@ body{
 .barraBusqueda{
   display: flex;
   flex-direction: row-reverse;
-  padding: 8px;
-  margin-bottom: 6px;
+  /* padding: 8px; */
+  /* margin-bottom: 6px; */
+  font-size: 16px;
   align-items: center;
 }
 
@@ -614,6 +615,7 @@ body{
   border-radius: 5px;
   border: 0px solid gray;
   outline: transparent;
+  color: black;
   padding: 2px;
 }
 
@@ -634,7 +636,7 @@ p{
   display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 14px;
+    padding: 0 0;
     flex-direction: row-reverse;
 }
 
@@ -661,10 +663,15 @@ p{
     font-size: 130%;
     text-align: center;
     color: white;
-    padding: 0.6%;
+    padding: 1%;
+    /* paddin */
     font-weight: 600;
+    font-family: helios;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .DataPersonalByUserContent{
@@ -722,4 +729,104 @@ p{
   display: flex;
     width: 100%;
     flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.contentPagination   {
+  display: flex;
+justify-content: space-between;
+flex-direction: column;
+}
+
+.fieldInputBlockContainer{
+  font-size: 12px;
+}
+
+#initDate{
+  display: none;
+}
+
+.fieldBtnInput div{
+  font-size: 10px !important;
+  padding: 0%;
+  border:0px solid gray !important;
+}
+
+.fieldBtnInput div svg{
+  /* font-size: 12px; */
+  padding: 0%;
+}
+
+.rs-picker-default .rs-picker-toggle.rs-btn {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-clean, .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean, .rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-caret, .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-caret,
+.rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-caret, .rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-clean 
+{
+  top: 4px  !important;
+}
+
+.rs-picker-search-bar{
+  font-size: 10px;
+}
+.rs-picker-menu,.rs-picker-search-bar-input
+{
+  font-size: 10px !important;
+}
+
+.rs-picker-search-bar-search-icon.rs-icon{
+
+  width: 9px !important;
+  top: 11px !important;
+}
+/* .fieldBtnInput div input{
+display: none;
+} */
+
+/* .rs-form-error-message-placement-bottom-start .rs-form-error-message, .rs-form-error-message-placement-top-start  */
+
+.rs-form-error-message{
+  z-index: 6;
+}
+
+
+.divTittleReport{
+  display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.spanTittleReport{
+  width: 272px;
+  font-weight: 600;
+  color: dimgrey;
+  text-align: right;
+  border-bottom: 2px solid #00ef00;
+  padding-right: 12px;
+}
+
+.contentBtnExcelRight{
+  text-align: right;
+
+}
+
+.classNameFormGroupExcel {
+  
+  font-size: 11px !important;
+  background-color: #efe800  !important;
+  /* background-color: #61dafb !important; */
+  color: black !important;
+  border: 0px solid gray !important;
+  font-weight: 600 !important;
+}
+
+.classNameFormGroupExcel2 {
+  
+  /* font-size: 11px !important; */
+  background-color: #efe800  !important;
+  /* background-color: #61dafb !important; */
+  color: black !important;
+  border: 0px solid gray !important;
+  font-weight: 600 !important;
 }

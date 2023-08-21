@@ -10,7 +10,7 @@ import { faSearch,faSpinner,faFileExcel } from "@fortawesome/free-solid-svg-icon
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import {dataParam} from "./js/FormUsers";
 import { SelectPicker } from 'rsuite';
-import {DataReportGlobal} from "./js/reportGlobal";
+import {DataReportGlobal,FunctionConvertDateInitToFinal} from "./js/reportGlobal";
 // import 
 import {urlCookie} from "./js/UrlAlot";
 import {LoadD,NoOneD,ErrorD} from "./js/noticeDesign";
@@ -23,6 +23,11 @@ const urlFetch = urlCookie+"AdminMain/index";
 
 
 
+let x = document.cookie;
+console.log(x);
+const typeOfReport = ['Reporte Detalle','Reporte Consolidado'].map(
+  (item,index) => ({ label: item, value: index })
+);
 let dataUsersArray = [];
 
 
@@ -888,14 +893,73 @@ class FormAllUsers extends Component {
   var whoDataTableIs = "";
 
   let URLhash = window.location.hash;
+  let typeOfReportIndex = URLhash ==="#details" ? 0: 1 ;
+  let style_Event = (this.state.campeones).length ===0 ?  {opacity:"0.5",pointerEvents:"none"} : {};
+  
+  let searchBtn = (<div className='contentFiltersAboutTable' style={style_Event} >
+  {/* <SelectPicker cleanable={false}  
+  data={dataSelectPicker}
+  defaultValue={dataSelectPicker[0].label}
+    // defaultValue={value}
+    onChange={this.onChangeView}
+    searchable={false} style={{ width: 224 }} />  */}
+  <div className="barraBusqueda">
+    <button onClick={this.onChangeSearch} type="button" className="btnBuscar" /*onClick={onClear}*/>
+            {" "}
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+          <input
+            type="text"
+            placeholder=""
+            className="customeTextFieldSearch"
+            name="busqueda"
+            id="idSearchTable"
+            onKeyDown={this.onChange}
+            // value={this.state.busqueda}
+            // value={""}
+            // onChange={this.onChange}
+          />
+          <span className='spanTextFieldSearch'>Buscar</span>
+
+        
+        </div>
+      </div>);
+
+
   console.log(URLhash);
+  let searchHtml = searchBtn ;
+  let dateInfo = (this.state.campeones).length ===0 ? "- - -" :this.props.propiedad;
+  // alert(dateInfo);
+  let textDate = dateInfo === "- - -" || dateInfo ==""  ?  "- - -" : FunctionConvertDateInitToFinal(dateInfo);
+  // textDate
+  // if( (props.data).length !== 0  ){
+    
+    // dateInfo = this.props.propiedad;
+    // dateInfo = props.data.details.post ;
+
+    // console.log(this.props.propiedad, "ESTO");
+    
+// }
   // alert(URLhash);
   // alert(URLhash);
   // this.state.view==="Reporte Detalle" || 
   // let tittleReport = URLhash ==="#details" ? "Reportes Detalle"  : "Reporte Consolidad";
   whoDataTableIs = 
   URLhash ==="#details" ?  
-  (<DataTable   
+  (
+  
+  <>
+  <div className='titleDataReportGlobal'> <span>REPORTE DETALLE  |  <span>
+    {textDate}
+    </span> </span>
+            
+            <span>
+                {searchHtml}
+                </span>  
+            
+             </div>
+  
+  <DataTable   
     className="dataTable01_"
     noHeader={true}
                             columns={this.state.columnas}
@@ -925,11 +989,18 @@ class FormAllUsers extends Component {
                           // </div>}
                             // progressComponent={<CustomLoader />}
                             // noHeader={true}
-          /> ) :     
-        <DataReportGlobal progressPending={this.props.container.load} data={dataUsersGlobal} search={this.state.searchForAnother}/>;
+          />
+          
+          </> ) :     
+        <DataReportGlobal 
+        details = { this.props.details}
+        searchBtn = {searchBtn}
+        style_Event = {style_Event}
+        progressPending={this.props.container.load} data={dataUsersGlobal} search={this.state.searchForAnother}/>;
 
   let display_ = this.props.container.load === true ? "none" : "block";
-  let style_Event = (this.state.campeones).length ===0 ?  {opacity:"0.5",pointerEvents:"none"} : {};
+  // let style_Event = (this.state.campeones).length ===0 ?  {opacity:"0.5",pointerEvents:"none"} : {};
+  // let typeOfReportIndex = URLhash ==="#details" ? 0: 1 ;
   console.warn(this.state);
   console.log("ALER");
   return (
@@ -943,26 +1014,24 @@ class FormAllUsers extends Component {
  
 
 
-    <br></br>  
-    <div>
-    <Button onClick={()=>{
+    {/* <br></br>   */}
+    <div className='contentBtnExcelRight'>
+    <Button className='classNameFormGroupExcel'  onClick={()=>{
       let linkDownLoad = this.props.json.details.encryptPostDownload;
       console.warn(linkDownLoad);
-      window.open( urlCookie+"AdminApiReportjobs/reportJobsExport2/"+linkDownLoad);
+      window.open( urlCookie+"AdminApiReportjobs/reportJobsExport2/"+linkDownLoad+"/"+typeOfReportIndex);
     }} variant="success"> <FontAwesomeIcon icon={faFileExcel} /> 
     <span>{' Descargar el contenido'}</span>
     </Button>
-    
+    {/* <SelectPicker 
+     defaultValue={ typeOfReportIndex }
+     cleanable = {false}
+    data={typeOfReport} searchable={false}  style={{ width: 224 }} /> */}
     </div>
-    <div className='contentFiltersAboutTable' style={style_Event} >
-      {/* <SelectPicker cleanable={false}  
-      data={dataSelectPicker}
-      defaultValue={dataSelectPicker[0].label}
-        // defaultValue={value}
-        onChange={this.onChangeView}
-        searchable={false} style={{ width: 224 }} />  */}
+    {/* <div className='contentFiltersAboutTable' style={style_Event} >
+  
       <div className="barraBusqueda">
-        <button onClick={this.onChangeSearch} type="button" className="btnBuscar" /*onClick={onClear}*/>
+        <button onClick={this.onChangeSearch} type="button" className="btnBuscar" >
                 {" "}
                 <FontAwesomeIcon icon={faSearch} />
               </button>
@@ -981,7 +1050,7 @@ class FormAllUsers extends Component {
 
             
             </div>
-          </div>
+          </div> */}
           
          
         <div>

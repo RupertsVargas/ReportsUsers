@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import TablePagination from '@mui/material/TablePagination';
 import moment from 'moment';
-
+import Button from 'react-bootstrap/Button';
 // NUEVOS
 import { useTheme } from '@mui/material/styles';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -23,16 +23,21 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {urlCookie} from "../js/UrlAlot";
 // import {faCircle, faInfo, faHeart, faCircleCheck,faCircleXmark,faCircleExclamation ,
 import {faCircle, faCircleCheck,faCircleXmark,faCircleExclamation ,
-  faEye,faEyeSlash,faPenToSquare,faBed,faGift,faGifts,
+  faEye,faEyeSlash,faPenToSquare,faBed,faGift,faGifts,faFileExcel,
   faMagnifyingGlass,faPencil, faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons";
 import 'moment/locale/es';
+
 export var boolChange = false;
 export var boolChangesd = false;
 
+const signoParaNOLinks = "javascript:void(0)";
 
+
+// console.log("TIPO DE ",typeOfReport)
 moment.locale('es'); // aca ya esta en es
 
 // var init = true;
@@ -74,7 +79,7 @@ function setImgResult(url_="NA",path,class_="imgResult_"){
 // function createData(day, stringDate, fat, carbs, protein, price,obj={} ) {
   function createData(obj={},dataAll={},fecha ) {
     let index = obj.dateNormalFormat;
-    
+    console.warn("QUE ES OBJ",obj,dataAll,fecha);
     // <i class="fa-solid fa-bed"></i>
     // console.log(obj);
     // console.log(obj.data); 
@@ -195,11 +200,11 @@ function setImgResult(url_="NA",path,class_="imgResult_"){
         let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
       // let iE = obj.iE ? obj.iE : "javascript:void(0)" ;
       // iE = iE ==="0"? "javascript:void(0)" : iE; 
-      let urlClickFather =  iE ==="0" ? "#!" : dataAll.info.url+"AdminIncidences/"+iE;
+      let urlClickFather =  iE ==="0" ? signoParaNOLinks : dataAll.info.url+"AdminIncidences/"+iE;
       // let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
 
         
-        if(urlClickFather==="#!"){
+        if(urlClickFather===signoParaNOLinks){
           // incidence__ = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
           incidence = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
         } else{
@@ -367,7 +372,7 @@ function createSubRows(obj={},objAll={},fecha,row_){
       // console.log(objIeAux);
       let iconIncidence_ = iE === "0" || objIeAux.length === 0  ? faEyeSlash  : faPenToSquare;
       let isDisableIncidence = iE === "0" || objIeAux.length === 0  ? "classDisableIncidence" : "";
-      let urlClickFather =  iE === "0" || objIeAux.length === 0 ? "#!" : objAll.info.url+"AdminIncidences/"+iE;
+      let urlClickFather =  iE === "0" || objIeAux.length === 0 ? signoParaNOLinks : objAll.info.url+"AdminIncidences/"+iE;
       // let isDisableIncidence = iE ==="0" ? "classDisableIncidence" : "";
       // if(urlClickFather!=="#!"){
         // incidence__ = <a className={isDisableIncidence} > <FontAwesomeIcon icon={iconIncidence_} className={"normalIncidence "} /> </a>;
@@ -660,7 +665,8 @@ function createSubRows(obj={},objAll={},fecha,row_){
       rows.push(createData(dataInfoFromObj[index],newObjSend,index));
         
       }
-
+      let URLhash = window.location.hash;
+      let typeOfReportIndex = URLhash ==="#details" ? 0: 1 ;
     return (
       <Paper className="paperClass" sx={{ width: '100%' }}>
       <TableContainer   sx={{ maxHeight: 440 }} >
@@ -698,6 +704,7 @@ function createSubRows(obj={},objAll={},fecha,row_){
           </TableBody>
         </Table>
       </TableContainer>
+      <div>
       <TablePagination
               // active={0}
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
@@ -720,7 +727,20 @@ function createSubRows(obj={},objAll={},fecha,row_){
               onRowsPerPageChange={handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActions}
             />
+            <div className="contentPagination">
+
+            <Button className="classNameFormGroupExcel2" onClick={()=>{
+      let linkDownLoad = dataObj.info.excelEnc;
+      // this.props.json.details.encryptPostDownload;
+      // console.warn(linkDownLoad);
+      window.open( urlCookie+"AdminApiReportjobs/reportJobsExport2/"+linkDownLoad+"/"+typeOfReportIndex);
+    }} variant="success"> <FontAwesomeIcon icon={faFileExcel} /> 
+    <span>{' Descargar datos de '+ dataObj.info.fullName}</span>
+    </Button>
+            </div>
+            </div>
     </Paper>
+
     
 
     );
@@ -731,7 +751,16 @@ function createSubRows(obj={},objAll={},fecha,row_){
     return time / 60;
 
   }
+function isItLess(numerito){
 
+  if(numerito<0){
+    return 0
+  }
+
+  return numerito;
+  // let numNum = "";
+  // return newNum ;
+}
 
 export function HeaderTable(objFather={}) {  
     let obj = objFather.info;
@@ -745,10 +774,10 @@ export function HeaderTable(objFather={}) {
     let summaryShow = {};
 
     // timeToReplace
-    summaryShow.timeTotal = summary.timeTotal ? (convertMinuteToHour(summary.timeTotal)).toFixed(2) : "-";
-    summaryShow.timeToReplace = summary.timeToReplace ? (convertMinuteToHour(summary.timeToReplace)).toFixed(2) : "-";
+    summaryShow.timeTotal = summary.timeTotal ? isItLess(convertMinuteToHour(summary.timeTotal)).toFixed(2) : "-";
+    summaryShow.timeToReplace = summary.timeToReplace ? isItLess(convertMinuteToHour(summary.timeToReplace)).toFixed(2) : "-";
     // timeExtra
-    summaryShow.timeExtra = summary.timeExtra ? (convertMinuteToHour(summary.timeExtra)).toFixed(2) : "-";
+    summaryShow.timeExtra = summary.timeExtra ? isItLess(convertMinuteToHour(summary.timeExtra)).toFixed(2) : "-";
 
     // obj.delays = obj.delays ? obj.delays : "-";
     summaryShow.faults = summary.faults ? summary.faults : "-";
